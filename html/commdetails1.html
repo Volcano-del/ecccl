@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>详情预览页</title>
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../css/details1.css">
+  <link rel="stylesheet" href="../publicJs/element_ui/element.css">
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .item_wrap {
+      display: none;
+    }
+
+    .right_point li {
+      width: 160px;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .right_point li:first-child {
+      margin-top: 10px;
+    }
+
+    .el-tabs__content {
+      padding-left: 0px;
+    }
+
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
+
+    .zhe_ma {
+      margin: 10px 20px;
+    }
+
+    .el-tabs__item:hover{
+      color: #dfaf89;
+    }
+
+    /* reset */
+
+body{font:12px/18px,arial,sans-serif;color:#585858;}
+
+body,div,p,span,form,iframe,table,td,th,input,textarea,button,label,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6{margin:0;padding:0;}
+
+h1,h2,h3,h4,h5,h6{font-size:100%; }
+
+ul,ol,li,dl{list-style-type:none;}
+
+em,i,dfn,cite,strong,small{font-style:normal;} 
+
+img{border:0;}
+
+fieldset,button,input,select,option{vertical-align:middle;font:12px/18px "宋体",arial,sans-serif;}
+
+table{border-collapse:collapse;border-spacing:0}
+
+textarea{resize:none}
+
+/* color */
+
+a:link,a:visited{text-decoration:none;}
+
+a:hover{color:#ef4165;text-decoration:none;}
+
+a:active{color:#1d7400;}
+
+/* clearfix */
+
+.clearfix:after{ visibility:hidden; display:block; font-size:0; content:" "; clear:both; height:0;}
+
+*html .clearfix{ zoom:1;}
+
+
+
+.preview{width:400px; height:465px;  margin-top: 10px;float: right;}
+
+/* smallImg */
+
+.smallImg{position:relative; height:52px; margin-top:10px; background-color:#F1F0F0; padding:6px 5px; width:340px; overflow:hidden;float:left;}
+
+.scrollbutton{width:14px; height:50px; overflow:hidden; position:relative; float:left; cursor:pointer; }
+
+.scrollbutton.smallImgUp , .scrollbutton.smallImgUp.disabled{background:url(../img/details/jian_left.png) no-repeat;
+    background-color: #F1F0F0;
+    width: 20px;
+    margin-right: 5px;
+    height: 64px;
+    margin-top: 10px;
+    background-position: 6px 25px;}
+
+.scrollbutton.smallImgDown , .scrollbutton.smallImgDown.disabled{background:url(../img/details/jian_right.png) no-repeat; 
+    margin-left: 380px;
+    margin-top: -65px;
+    background-color: #F1F0F0;
+    width: 20px;
+    height: 64px;
+    background-position: 7px 25px;}
+
+
+
+#imageMenu {height:50px; width:360px; overflow:hidden; margin-left:0; float:left;}
+
+#imageMenu li {height:50px; width:57px; overflow:hidden; float:left; text-align:center;}
+
+#imageMenu li img{width:50px; height:50px;cursor:pointer;}
+
+#imageMenu li#onlickImg img, #imageMenu li:hover img{ width:44px; height:44px; border:3px solid #959595;}
+
+/* bigImg */
+
+.bigImg{position:relative; float:left; width:400px; height:400px; overflow:hidden;}
+
+.bigImg #midimg{width:400px; height:400px;}
+
+.bigImg #winSelector{width:235px; height:210px;}
+
+#winSelector{position:absolute; cursor:crosshair; filter:alpha(opacity=15); -moz-opacity:0.15; opacity:0.15; background-color:#000; border:1px solid #fff;}
+
+/* bigView */
+
+#bigView{position:absolute;border: 1px solid #959595; overflow: hidden; z-index:999;top: 115px!important;width: 470px;height: 420px;left: 880px!important;}
+
+#bigView img{position:absolute;}
+.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: #dfaf89;
+  border-color: #dfaf89;
+}
+.is-checked+.el-checkbox__label{
+  color: #dfaf89;
+}
+ .el-checkbox__inner::after {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    content: "";
+    border: 1px solid #FFF;
+    border-left: 0;
+    border-top: 0;
+    height: 7px;
+    left: 4px;
+    position: absolute;
+    top: 0;
+    -webkit-transform: rotate(45deg) scaleY(0);
+    transform: rotate(45deg) scaleY(0);
+    width: 3px;
+    -webkit-transition: -webkit-transform .15s ease-in .05s;
+    transition: -webkit-transform .15s ease-in .05s;
+    transition: transform .15s ease-in .05s;
+    transition: transform .15s ease-in .05s, -webkit-transform .15s ease-in .05s;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    z-index: 9999999999;
+    display: block;
+}
+.ischecked{
+  width: 3px;
+  height: 7px;
+  border: 1px solid #dfaf89;
+  position: absolute;
+  border-left: 0;
+  border-top: 0;
+  top: 14px;
+  left: -10px;
+  transform: rotate(45deg) scaleY(1);
+  z-index: 9999;
+}
+</style>
+</head>
+
+<body id="bod">
+  <div id="app" v-cloak>
+    <!-- 右侧内容 -->
+    <div  class="addcp">
+      <div style="width: 20px;height: 30px;display: inline-block;"></div>
+      <div class="again_sec">
+        <a href="#" >
+          <div  @click="shouYe(1,true)" v-show="dw!=1">内容配置</div>
+        </a>
+        <a href="#">
+          <div  @click="shouYe(2,false)">个人中心</div>
+        </a>
+        <a href="#">
+          <div @click="shouYe(3,false)">返回首页</div>
+        </a>
+      </div>
+    </div>
+    
+    <!-- logo+搜索框 -->
+    <div class="again_top" :style="{background:'url('+imurl+background_img+')'}">
+      <div class="again_toms">
+        <div class="again_imgs">
+          <img :src="imurl+logoimg" alt="">
+          <p class="again_font">{{step_name}}</p>
+        </div>
+        <!-- <div class="search">
+          <div class="search_input" :style="{'border-color':activeColor}">
+            <input maxlength="20" type="text" placeholder="搜索商品关键词" value="">
+            <a href="javascript:;" :style="{'background':activeColor}">搜本店</a>
+          </div> 
+        </div>  -->
+      </div>
+    </div>
+    
+    <!-- 导航 -->
+    <div class="navigation" :style="{'background-color':activeColor}" >
+      <div class="nav_c w1200">
+        <div class="side_nav">
+            <p class="side_p"></p>
+            <div class="side_sec">
+              <span class="side_shou" @click="goindex">首页</span>
+              <span class="side_shou">商品详情</span>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 宝贝详情上部 -->
+    <div class="cent ban">
+      <div class="cent_top">
+        <!-- 详情左侧 -->
+        <div class="bandN">
+            <!-- 详情小图切换大图 -->
+            <div class="preview">
+                <div id="vertical" class="bigImg">
+                    <img :src="baseUrl+goods_picture_list[0]" width="400" height="400" alt="" id="midimg" />
+                    <div style="display:none;" id="winSelector"></div>
+                </div><!--bigImg end-->	
+                <div class="scrollbutton smallImgUp disabled"></div>
+                <div class="smallImg">
+                  <div id="imageMenu">
+                    <ul>
+                        <li id="onlickImg"><img :src="baseUrl+goods_picture_list[0]" width="68" height="68" alt=""/></li>
+                        <li  v-for="(item,index) of goods_picture_list.slice(1)" >
+                          <img :src="baseUrl+item" width="68" height="68" alt=""/>
+                        </li>
+                    </ul>
+                </div>
+                  </div><!--smallImg end-->
+                  <div id="bigView" style="display:none"><img width="800" height="800" alt="" src="" /></div>
+                  <div class="scrollbutton smallImgDown"></div>
+            </div>
+        </div>
+        <!-- 详情右侧 -->
+        <div class="navCo">
+            <div class="nav_title">
+                <span>{{goods_name}}</span>
+            </div>
+            <div class="nav_price" id="nav_price" style="display: block;">
+                <div class="nav_pri">售 价<p v-bind:style="{'color':activeColor}">￥{{goods_price}}</p></div>
+                <div class="nav_you">
+                  <div style="float: left;">优 惠</div>
+                  <div class="nav_ll" style="float: left;" v-bind:style="{'background':activeColor}">
+                    <img src="../img/details/left.png" alt="">
+                    <img src="../img/details/right.png" alt="">
+                    <div class="nav_wen">{{goods_full1}}-{{goods_minus1}}</div>
+                  </div>
+                  <div class="nav_rr" style="float: left;" v-bind:style="{'background':activeColor}">
+                    <img src="../img/details/left.png" alt="">
+                    <img src="../img/details/right.png" alt="">
+                    <div class="nav_w">{{goods_full2}}-{{goods_minus2}}</div>
+                  </div>
+              </div>
+            </div>
+            <div class="nav_gu">
+                <div style="float: left;">规格</div>
+                <div class="nav_g" v-bind:style="{'border-color':activeColor}">
+                    <p>{{goods_val}}/{{goods_spec}}</p>
+                    <div class="zz3" v-bind:style="{'border-right-color':activeColor}">
+                      <img src="../img/details/yes.png" alt="" style="float: right;">
+                    </div>
+                </div>
+            </div>
+            <div class="nav_count">
+                <div style="float: left;">数量</div>
+                <div class="nav_co">
+                    <button>-</button>
+                    <span>1</span>
+                    <button>+</button>
+                </div>
+            </div>
+            <div class="nav_pro">
+                <div style="float: left;">承诺</div>
+                <img src="../img/details/qi_wu.png" alt=""><span>七天退换</span>
+                <img src="../img/details/an_time.png" alt=""><span>按时到货</span>
+                <img src="../img/details/mai.png" alt=""><span>买家保障</span>
+            </div> 
+            <div class="nav_btn" v-bind:style="{'border-color':activeColor,'background':actColor}" @click="gobuy">
+                <span v-bind:style="{'color':activeColor}">立即购买</span>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 宝贝详情下部 -->
+    <div class="center band">
+      <div class="nav">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="详情" name="first">
+            <div class="navcont">
+              <!-- 产品参数 -->
+              <div class="contents">
+                <p>产品参数</p>
+                <div style="margin-top: 15px;">
+                  <div class="content_c" v-for="(item,index) in tabledata">
+                    <div v-if="item.dictionary_value!=''&&item.dictionary_value!=undefined">{{item.dictionary_name}}：<p>{{item.dictionary_value}}</p></div>
+                  </div>
+                </div>
+              </div>
+              <!-- 包装说明 -->
+              <div class="bao" id="bao" style="display: block;"> 
+                <p>包装说明</p>
+                <div class="bao_1">
+                  {{set_description}}
+                </div>
+              </div>
+              <!-- 产品资质 -->
+              <div class="zi" id="zi" style="display: block;">
+                <p>产品资质</p>
+                <div class="zi_f">
+                  <div class="zi_1" v-for="(item,index) of set_qualification">
+                    <img :src="imurl+item" alt="">
+                  </div>
+                </div>
+                
+              </div>
+              <!-- 详情图 -->
+              <div class="chan">产品描述</div>
+              <div class="miao" id="miao" style="display: block;">
+                <img :src="set_detailsPic" alt="">
+              </div>
+            </div>
+          </el-tab-pane>
+
+          <el-tab-pane label="用户评价" name="second">
+            <div id="navc" style="display: block;">
+              <div class="navc" v-for="(item,index) in evaluation">
+              <!-- 用户评价 -->
+                  <div class="grade">
+                    <P>评价等级: </P>
+                    <div class="grade_1">
+                      {{item.evaluation_level}}
+                    </div>
+                  </div>
+                
+                <!-- 文字 -->
+                <div class="baoo"> 
+                  <p>评价内容: （文字部分 / 图片部分）</p>
+                  <div class="wenzi" id="wenzi" style="display: block;">
+                    <!-- <p>文字部分</p> -->
+                    <div class="baoo_1">
+                      宝贝详情：{{item.evaluation_content}}
+                    </div>
+                    <div class="baoo_1">
+                      冷链物流：{{item.evaluation_logistics}}
+                    </div>
+                  </div>
+                  <div class="picture">
+                    <!-- <p>图片部分</p> -->
+                    <div class="baoo_2">
+                      <img :src="baseUrl+item.evaluation_pic" alt="">
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </div>
+
+    <!-- 底部、售后 -->
+    <div class="bottom">
+      <div class="After_sale">
+        <!-- 品质保障 -->
+        <div class="good">
+          <img src="../img/details/you.png" alt="品质保障">
+          <p class="p1">品质保障</p>
+          <p class="p2">品质护航 购物无忧</p>
+        </div>
+        <div class="good">
+          <img src="../img/details/qi.png" alt="品质保障">
+          <p class="p1">七天无理由退换货</p>
+          <p class="p2">为您提供售后无忧保障</p>
+        </div>
+        <div class="good">
+          <img src="../img/details/te.png" alt="品质保障">
+          <p class="p1">特色服务体验</p>
+          <p class="p2">为您呈现不一样的服务</p>
+        </div>
+        <div class="good good2">
+          <img src="../img/details/help.png" alt="品质保障">
+          <p class="p1">帮助中心</p>
+          <p class="p2">您的购物指南</p>
+        </div>
+      </div>
+    </div>
+    <!-- 底部菜单 -->
+    <div class="bottom_list">
+      <div class="bottom_text">
+        <div class="bottom_item">
+          <div class="text_item">
+            <p>购物指南</p>
+            <ul>
+              <li>
+                <a href="javascript:;">购物流程</a>
+              </li>
+              <li>
+                <a href="javascript:;">会员介绍</a>
+              </li>
+              <li>
+                <a href="javascript:;">生活旅行/团购</a>
+              </li>
+              <li>
+                <a href="javascript:;">常见问题</a>
+              </li>
+              <li>
+                <a href="javascript:;">大家点</a>
+              </li>
+              <li>
+                <a href="javascript:;">联系客服</a>
+              </li>
+            </ul>
+          </div>
+          <div class="text_item">
+            <p>配送方式</p>
+            <ul>
+              <li>
+                <a href="javascript:;">上门自提</a>
+              </li>
+              <li>
+                <a href="javascript:;">211限时达</a>
+              </li>
+              <li>
+                <a href="javascript:;">配送服务查询</a>
+              </li>
+              <li>
+                <a href="javascript:;">配送费收取标准</a>
+              </li>
+              <li>
+                <a href="javascript:;">海外配送</a>
+              </li>
+            </ul>
+          </div>
+          <div class="text_item">
+            <p>支付方式</p>
+            <ul>
+              <li>
+                <a href="javascript:;">快捷支付</a>
+              </li>
+              <li>
+                <a href="javascript:;">信用卡</a>
+              </li>
+              <li>
+                <a href="javascript:;">余额宝</a>
+              </li>
+              <li>
+                <a href="javascript:;">蚂蚁花呗</a>
+              </li>
+              <li>
+                <a href="javascript:;">货到付款</a>
+              </li>
+            </ul>
+          </div>
+          <div class="text_item">
+            <p>售后服务</p>
+            <ul>
+              <li>
+                <a href="javascript:;">售后服务</a>
+              </li>
+              <li>
+                <a href="javascript:;">价格保护</a>
+              </li>
+              <li>
+                <a href="javascript:;">退款说明</a>
+              </li>
+              <li>
+                <a href="javascript:;">返修/退换货</a>
+              </li>
+              <li>
+                <a href="javascript:;">取消订单</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- 版权所有 -->
+        <div class="cop_tech" style="width: 530px;display: flex;">
+          <p class="cop">©2012-2020 河南牧业经济学院</p>
+          <p class="tech">豫ICP备15026586</p>
+          <p>英才校区地址：郑州市惠济区英才街146号</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../publicJs/vue.js"></script>
+<script src="../js/pub.js"></script>
+<script src="../publicJs/axios.js"></script>
+<script src="../publicJs/jquery.1.4.2-min.js"></script>
+<script src="../publicJs/element_ui/element.js"></script>
+<script src="../js/commdetails1.js"></script>
+<script>
+  
+  // 详情大小图切换
+  $(document).ready(function(){
+  
+  // 图片上下滚动
+  
+  var count = $("#imageMenu li").length - 5; /* 显示 6 个 li标签内容 */
+  
+  var interval = $("#imageMenu li:first").width();
+  
+  var curIndex = 0;
+  
+  
+  
+  $('.scrollbutton').click(function(){
+  
+      if( $(this).hasClass('disabled') ) return false;
+  
+      
+  
+      if ($(this).hasClass('smallImgUp')) --curIndex;
+  
+      else ++curIndex;
+  
+      
+  
+      $('.scrollbutton').removeClass('disabled');
+  
+      if (curIndex == 0) $('.smallImgUp').addClass('disabled');
+  
+      if (curIndex == count-1) $('.smallImgDown').addClass('disabled');
+  
+      
+  
+      $("#imageMenu ul").stop(false, true).animate({"marginLeft" : -curIndex*interval + "px"}, 600);
+  
+  });	
+  
+  // 解决 ie6 select框 问题
+  
+  $.fn.decorateIframe = function(options) {
+  
+      if ($.browser.msie && $.browser.version < 7) {
+  
+          var opts = $.extend({}, $.fn.decorateIframe.defaults, options);
+  
+          $(this).each(function() {
+  
+              var $myThis = $(this);
+  
+              //创建一个IFRAME
+  
+              var divIframe = $("<iframe />");
+  
+              divIframe.attr("id", opts.iframeId);
+  
+              divIframe.css("position", "absolute");
+  
+              divIframe.css("display", "none");
+  
+              divIframe.css("display", "block");
+  
+              divIframe.css("z-index", opts.iframeZIndex);
+  
+              divIframe.css("border");
+  
+              divIframe.css("top", "0");
+  
+              divIframe.css("left", "0");
+  
+              if (opts.width == 0) {
+  
+                  divIframe.css("width", $myThis.width() + parseInt($myThis.css("padding")) * 2 + "px");
+  
+              }
+  
+              if (opts.height == 0) {
+  
+                  divIframe.css("height", $myThis.height() + parseInt($myThis.css("padding")) * 2 + "px");
+  
+              }
+  
+              divIframe.css("filter", "mask(color=#fff)");
+  
+              $myThis.append(divIframe);
+  
+          });
+  
+      }
+  
+  }
+  
+  $.fn.decorateIframe.defaults = {
+  
+      iframeId: "decorateIframe1",
+  
+      iframeZIndex: -1,
+  
+      width: 0,
+  
+      height: 0
+  
+  }
+  
+  //放大镜视窗
+  
+  $("#bigView").decorateIframe();
+  
+  //点击到中图
+  
+  var midChangeHandler = null;
+  
+  setTimeout(()=>{
+    $("#imageMenu li img").bind("click", function(){
+  
+    if ($(this).attr("id") != "onlickImg") {
+
+        midChange($(this).attr("src").replace("small", "mid"));
+
+        $("#imageMenu li").removeAttr("id");
+
+        $(this).parent().attr("id", "onlickImg");
+
+    }
+
+}).bind("mouseover", function(){
+
+    if ($(this).attr("id") != "onlickImg") {
+
+        window.clearTimeout(midChangeHandler);
+
+        midChange($(this).attr("src").replace("small", "mid"));
+
+        $(this).css({ "border": "3px solid #959595" });
+
+    }
+
+}).bind("mouseout", function(){
+
+    if($(this).attr("id") != "onlickImg"){
+
+        $(this).removeAttr("style");
+
+        midChangeHandler = window.setTimeout(function(){
+
+            midChange($("#onlickImg img").attr("src").replace("small", "mid"));
+
+        }, 1000);
+
+    }
+
+});
+  },100)
+  
+  function midChange(src) {
+  
+      $("#midimg").attr("src", src).load(function() {
+  
+          changeViewImg();
+  
+      });
+  
+  }
+  
+  //大视窗看图
+  
+  function mouseover(e) {
+  
+      if ($("#winSelector").css("display") == "none") {
+  
+          $("#winSelector,#bigView").show();
+  
+      }
+  
+      $("#winSelector").css(fixedPosition(e));
+  
+      e.stopPropagation();
+  
+  }
+  
+  function mouseOut(e) {
+  
+      if ($("#winSelector").css("display") != "none") {
+  
+          $("#winSelector,#bigView").hide();
+  
+      }
+  
+      e.stopPropagation();
+  
+  }
+  
+  $("#midimg").mouseover(mouseover); //中图事件
+  
+  $("#midimg,#winSelector").mousemove(mouseover).mouseout(mouseOut); //选择器事件
+  
+  var $divWidth = $("#winSelector").width(); //选择器宽度
+  
+  var $divHeight = $("#winSelector").height(); //选择器高度
+  
+  var $imgWidth = $("#midimg").width(); //中图宽度
+  
+  var $imgHeight = $("#midimg").height(); //中图高度
+  
+  var $viewImgWidth = $viewImgHeight = $height = null; //IE加载后才能得到 大图宽度 大图高度 大图视窗高度
+  
+  
+  function changeViewImg() {
+    setTimeout(() => {
+  
+      $("#bigView img").attr("src", $("#midimg").attr("src").replace("mid", "big"));
+  
+    },100);
+  }
+  
+  changeViewImg();
+  
+  $("#bigView").scrollLeft(0).scrollTop(0);
+  
+  function fixedPosition(e) {
+  
+      if (e == null) {
+  
+          return;
+  
+      }
+  
+      var $imgLeft = $("#midimg").offset().left; //中图左边距
+  
+      var $imgTop = $("#midimg").offset().top; //中图上边距
+  
+      X = e.pageX - $imgLeft - $divWidth / 2; //selector顶点坐标 X
+  
+      Y = e.pageY - $imgTop - $divHeight / 2; //selector顶点坐标 Y
+  
+      X = X < 0 ? 0 : X;
+  
+      Y = Y < 0 ? 0 : Y;
+  
+      X = X + $divWidth > $imgWidth ? $imgWidth - $divWidth : X;
+  
+      Y = Y + $divHeight > $imgHeight ? $imgHeight - $divHeight : Y;
+  
+  
+  
+      if ($viewImgWidth == null) {
+  
+          $viewImgWidth = $("#bigView img").outerWidth();
+  
+          $viewImgHeight = $("#bigView img").height();
+  
+          if ($viewImgWidth < 200 || $viewImgHeight < 200) {
+  
+              $viewImgWidth = $viewImgHeight = 800;
+  
+          }
+  
+          $height = $divHeight * $viewImgHeight / $imgHeight;
+  
+          $("#bigView").width($divWidth * $viewImgWidth / $imgWidth);
+  
+          $("#bigView").height($height);
+  
+      }
+  
+      var scrollX = X * $viewImgWidth / $imgWidth;
+  
+      var scrollY = Y * $viewImgHeight / $imgHeight;
+  
+      $("#bigView img").css({ "left": scrollX * -1, "top": scrollY * -1 });
+  
+      $("#bigView").css({ "top": 75, "left": $(".preview").offset().left + $(".preview").width() + 15 });
+  
+  
+  
+      return { left: X, top: Y };
+  
+  }
+  
+  });
+</script>
+<script>
+// 数量加减
+var nav=document.getElementsByClassName("nav_co");
+var btns=nav[0].getElementsByTagName("button");
+for(var btn of btns){
+  btn.onclick=function(){
+      var span=this.parentNode.children[1];
+      var n=parseInt(span.innerHTML);//按值传递
+      if(this.innerHTML=="+"){
+          n++;
+      }else if(n>1){//否则如果当前点的按钮的内容是-,且n>1时，才对n-1
+          n--;
+      }
+      span.innerHTML=n;
+  }
+}
+</script>
+
+</html>

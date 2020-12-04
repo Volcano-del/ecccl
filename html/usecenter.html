@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户中心</title>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/usecenter.css">
+    <link rel="stylesheet" href="../publicJs/element_ui/element.css">
+    <style>
+        [v-cloak]{
+        display: none;
+        }
+    .top{
+    width: 100%;
+    min-width: 1200px;
+    height: 81px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    overflow: hidden;
+    position: relative;
+}
+.top::before{
+    content: "";
+    position: absolute;
+    left: 35%;
+    width: 215px;
+    height: 100px;
+    background-color: #fff;
+    transform: translate(-52px,40px) rotate(30deg);
+}
+.top::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 35%;
+    height: 81px;
+    background-color: #fff;
+}
+.use_handler{
+    display: flex;
+    margin-top: 25px;
+}
+.arrow_banner {
+      display: flex;
+      justify-content: space-between;
+      width: 1200px;
+      height: 80px;
+      margin: 0 auto;
+      position: absolute;
+      top: 50%;
+      margin-top: -40px;
+      left: 19%;
+    }
+
+    .arrow_banner span {
+      width: 45px;
+      height: 80px;
+      background-color: rgba(0, 0, 0, 0.3);
+      line-height: 80px;
+      text-align: center;
+      cursor: pointer;
+      display: none;
+      transition: all 1s;
+    }
+
+    .arrow_banner span img {
+      vertical-align: middle;
+      border-style: none;
+    }
+
+    .banner:hover .arrow_left {
+      display: block;
+
+    }
+
+    .banner:hover .arrow_right {
+      display: block;
+    }
+
+    .arrow_left:hover,
+    .arrow_left:active {
+      background-color: rgba(0, 0, 0, 1);
+    }
+    /* 顶 */
+    .con{
+      width:1200px;
+      margin:0 auto;
+      display: flex;
+      justify-content: space-between;
+      z-index: 999;
+    }
+    .con .left{
+      padding-top: 16px;
+    }
+    .man_le{
+        margin: 20px 0 0 35px;
+    }
+    .but_foot{
+        width: 100%;
+        display: flex;
+        margin: 40px 0;
+        justify-content: center;
+    }
+     /*** 消除input元素 type="number" 时默认的 加减按钮*/
+     input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /*** 消除input元素 type="number" 时默认的 加减按钮---moz版*/
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+        .el-table .cell {
+            text-align: center;
+        }
+        .el-table .cell, .el-table th div{
+            padding-left: 0px;
+        }
+        .el-tooltip__popper {
+            width: 250px;
+        }
+        .el-pagination {
+           text-align: center;
+           margin: 0 auto;
+        }
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+        .el-table .cell {
+            padding-left: 15px;
+        }
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+        .el-breadcrumb__inner a:hover{
+            color: #dfaf89;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+  <div id="usercenter" v-cloak>
+    <div class="top">
+        <div class="con">
+          <div class="left">
+            <img src="../img/logo.png" alt="">
+          </div>
+          <div class="use_handler">
+              <div class="btn_black">
+                  <a href="../index.html">返回首页</a>
+              </div>
+              <div class="btn_white">
+                 <a href="#" @click="exit" >退出</a>
+              </div>
+            </div>
+        </div>
+      </div>
+    <div class="head" style="z-index: 11111;">
+        <div class="center">
+            个人中心
+        </div>
+    </div>
+    <div class="locate">
+        <div class="center">
+            <i class="icon"></i>
+            <el-breadcrumb separator="/" style="display: inline-block;">
+                <el-breadcrumb-item><a href="../index.html">首页</a></el-breadcrumb-item>
+                <el-breadcrumb-item><a href=".//usecenter.html">个人中心</a></el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
+    </div>
+    <div class="center band">
+        <div class="bandNav">
+            <div class="navItem first">
+               <a href="#p1">基本信息</a>
+            </div>
+            <div class="navItem">
+                <a href="#p2">修改密码</a>
+            </div>
+            <div class="navItem">
+                <a href="#p5" @click="opentext">开始实验</a>
+            </div>
+            <div class="navItem">
+                <a href="#p6">电商平台</a>
+            </div>
+            <div class="navItem">
+                <a href="#p3">积分详情</a>
+            </div>
+            <div class="navItem">
+                <a href="#p4" @click="listest">学生成绩</a>
+            </div>
+            <div class="navItem">
+                <a href="./messageList.html">消息中心</a>
+            </div>
+        </div>
+        <!-- 修改个人信息 -->
+        <div class="navCont" id="p1" >
+            <div class="contTitle">
+                基本信息
+            </div>
+            <div class="cont">
+                <div style="width: 900px;display: flex;justify-content: space-around;">
+                    <div>
+                        <div class="line">
+                            <div class="lineTitle">手机号码:</div>
+                            <div><span>{{tabe.phone}}</span>
+                                <div class="btn_change"><a href="#p7">修改手机</a></div>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="lineTitle">真实姓名:</div>
+                            <div><span>{{tabe.student_name}}</span></div>
+                        </div>
+                        <div class="line">
+                            <div class="lineTitle">学生属性:</div>
+                            <div><span>{{tabe.school==0?'非本校学生' : '本校学生'}}</span></div>
+                        </div>
+                        <div class="line">
+                            <div class="lineTitle">所在班级:</div>
+                            <div><span>{{tabe.grade}}</span></div>
+                        </div>
+                    </div>
+                    <div class="cont_r" style="width: 180px;">
+                        <el-upload
+                            class="avatar-uploader"
+                            :action="imgurl"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload">
+                            <img v-if="imageUrl" :src="imgul+imageUrl" class="avatar">
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                        <div class="btn_edit" v-if="imageUrl">修改头像</div>
+                        <div class="btn_edit" v-else>上传头像</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 修改密码 -->
+        <div class="navCont" id="p2" >
+            <div class="contTitle">
+                修改密码
+            </div>
+            <div class="cont password" style="display: block;">
+                <div>
+                    <div class="cont_l">
+                        <div class="line">
+                            <div class="lineTitle">旧密码:</div>
+                            <div><input type="password" v-model="old_password" placeholder="请输入旧密码">
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="lineTitle">新密码:</div>
+                            <div>
+                                <input type="password"  v-model="newpass" placeholder="请输入新密码">
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="lineTitle">确认密码:</div>
+                            <div>
+                                <input type="password" v-model="newagainpass" placeholder="请确认新密码">
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="lineTitle"></div>
+                            <div class="xiu">
+                                <div class="btn_save" @click="makePassword">保存</div>
+                                <div class="btn_cancel" @click="delet">取消</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cont p_result" style="display: none;">
+                <div>
+                    <div class="msg">
+                        <div></div>
+                        <p>修改密码成功，请牢记新的登录密码！</p>
+                        <p>自动跳转登录页面，需要重新登录！</p>
+                    </div>
+                    <div class="btn_relog" @click="reLogin()">重新登录</div>
+                </div>
+            </div> 
+        </div>
+        <!-- 修改手机号 -->
+        <div class="navCont" id="p7" >
+            <div class="contTitle">
+                修改手机
+            </div>
+            <div class="cont_s password" style="display: block;">
+                <div>
+                    <div class="cont_l">
+                        <div class="line">
+                            <div class="lineTitle">验证密码:</div>
+                            <div>
+                                <input type="password" v-model="password" placeholder="请输入验证密码">
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="lineTitle">新手机号:</div>
+                            <div><input type="number" v-model="newphone" @input="nphone" placeholder="请输入新手机号">
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="lineTitle"></div>
+                            <div class="xiu">
+                                <div class="btn_save" @click="makePhone">保存</div>
+                                <div class="btn_cancel" @click="delet">取消</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cont p_result" style="display: none;">
+                <div>
+                    <div class="msg">
+                        <div></div>
+                        <p>修改手机号成功！</p>
+                        <p>自动跳转登录页面，需要重新登录！</p>
+                    </div>
+                    <div class="btn_relog" @click="reLogin()">重新登录</div>
+                </div>
+            </div>
+        </div>
+        <!-- 积分详情 -->
+        <div class="navCont" id="p3" >
+            <div class="contTitle">
+                积分详情
+            </div>
+            <div class="contx" >
+                <div style="width: 100%;height: auto;text-align: center;">
+                    <el-table
+                        :data="tables"
+                        style="width: 100%"
+                        :row-class-name="tableRowClassName">
+                        <el-table-column
+                        prop="points_name"
+                        label="项目名称"
+                        width="180" 
+                        show-overflow-tooltip
+                        style="padding-left: 15px;">
+                        </el-table-column>
+                        <el-table-column
+                        prop="type_name" 
+                        label="项目类型"
+                        width="180">
+                        </el-table-column>
+                        <el-table-column
+                        prop="student_name"
+                        label="姓名">
+                        </el-table-column>
+                        <el-table-column
+                        prop="points_score"
+                        label="积分"
+                        >
+                            <template slot-scope="scope">
+                                <p v-if="scope.row.bonusPointsType=='add'">+{{scope.row.points_score}}</p>
+                                <p v-else>-{{scope.row.points_score}}</p>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                        sortable
+                        prop="add_time"
+                        label="时间">
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <div class="jifen">总积分：{{bonus_points}}</div>
+                <div class="block" style="text-align: center;height: 2px;">
+                    <el-pagination
+                      :page-size="PAgesize"
+                      layout="prev, pager, next"
+                      :total="taol" 
+                      @current-change="handleChange">
+                    </el-pagination>
+                </div>
+            </div>
+        </div> 
+        <!-- 学生成绩 -->
+        <div class="navCont" id="p4">
+            <div class="contTitle">
+                学生成绩
+            </div>
+            <el-table
+                :data="tableData"
+                style="width: 100%;border-top: 1px solid #eee;">
+                <el-table-column
+                prop="student_name"
+                label="姓名"
+                >
+                </el-table-column>
+                <el-table-column
+                prop="team_name"
+                label="小组名称"
+                >
+                </el-table-column>
+                <el-table-column
+                prop="group_score"
+                label="小组分数"
+                >
+                </el-table-column>
+                <el-table-column
+                prop="soft_score"
+                label="软文推广分数"
+                width="105"
+                >
+                </el-table-column>
+                <el-table-column
+                prop="live_score"
+                label="直播分数"
+                >
+                </el-table-column>
+                <el-table-column
+                prop="commodity_score"
+                label="商品详情优化分数"
+                width="105">
+                </el-table-column>
+                <el-table-column
+                prop="logistic_score"
+                label="冷链物流分数"
+                width="105">
+                </el-table-column>
+                <el-table-column
+                prop="short_video_score"
+                label="短视频分数"
+                width="105">
+                </el-table-column>
+                <el-table-column
+                prop="store_score"
+                label="店铺优化分数"
+                width="105">
+                </el-table-column>
+                <el-table-column
+                prop="evaluate_content"
+                label="评语"
+                show-overflow-tooltip
+                >
+                    <template slot-scope="scope" >
+                        <span class="evaluate">{{scope.row.evaluate_content}}</span>
+                    </template>
+                </el-table-column>  
+            </el-table>  
+            <div class="block">
+                <el-pagination
+                    layout="prev, pager, next"
+                    :total="total"
+                    :page-size="pagesize"
+                    @current-change="handleCurrentChange">
+                </el-pagination>
+            </div>         
+        </div>
+        <!-- 开始实验 -->
+        <div class="navCont" id="p5" >
+            <div class="contTitle shiyan">
+                开始实验
+            </div>
+            <div class="zu" v-if="show==0">
+                <div class="man_le">
+                    <span>选择小组：</span>
+                    <el-select v-model="value" placeholder="请选择" @change="Times">
+                        <el-option
+                          v-for="item in times"
+                          :key="item.dictionary_id"
+                          :label="item.dictionary_name"
+                          :value="{value:item.dictionary_id,label:item.dictionary_name}">
+                        </el-option>
+                      </el-select>
+                </div>
+                <div class="man_le">
+                    <span>店铺类别：</span>
+                    <el-select v-model="value1" placeholder="请选择" @change="shop">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.dictionary_id"
+                          :label="item.dictionary_name"
+                          :value="{value:item.dictionary_id,label:item.dictionary_name}">
+                        </el-option>
+                      </el-select>
+                </div>
+                <div class="man_le">
+                    <span>选择实验：</span>
+                    <el-select v-model="value2" multiple placeholder="请选择">
+                        <el-option
+                          v-for="item in optio"
+                          :key="item.dictionary_id"
+                          :label="item.dictionary_name"
+                          :value="item.dictionary_id">
+                        </el-option>
+                    </el-select>
+                    <div class="xuan">可多选</div>
+                    <div class="tip">注意：每组最多仅限6人</div>
+                </div>
+            </div>
+                <el-row style="width: 680px;" v-if="show==1">
+                    <el-button type="danger" v-for="(item,index) of textcount" @click="pusha(index,item.experiment_module_id)"> 
+                        <a href="#">{{item.experiment_module_name}}</a>
+                    </el-button>
+                </el-row>
+            
+            <div class="but_foot" v-show="sav1">
+                <el-button type="primary" @click="getdata">保存</el-button>
+                <el-button type="danger">取消</el-button>
+            </div>
+        </div>
+        <!-- 电商平台 -->
+        <div class="navCont" id="p6" >
+            <div class="contTitle">
+                电商平台
+            </div>
+            <div class="cont p_dian">
+                <div style="height: 20px;margin-bottom: 40px;">
+                    <el-input v-model="input_dian" placeholder="请输入搜索内容" style="display: inline;"></el-input>
+                    <el-button type="primary" icon="el-icon-search" style="height: 40px;margin-left: 15px;" @click="getcount">搜索</el-button>   
+                </div>
+                    <ul style="padding-left: 34px;">
+                        <li v-for="(item,ia) of navlist" :key="ia" class="jis" @click="contList(item.id,item.student_id,item.template_id)">
+                            {{item.dept_name}}
+                        </li>
+                    </ul>
+                <div class="block" style="text-align: center;height: 20px;">
+                    <el-pagination
+                      @current-change="handleCurrent"
+                      :page-size="PageSize"
+                      layout="prev, pager, next"
+                      :total="alunt">
+                    </el-pagination>
+                  </div>
+            </div>
+        </div>
+        <!-- 直播视频 -->
+        <div class="navCont" id="p8" >
+            <div class="contTitle">
+                直播实验
+            </div>
+            <div class="cont_z">
+                <div>
+                    <div class="btn_relog">功能尚在完善中...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+    <script src="../publicJs/element_ui/vue.js"></script>
+    <script src="../publicJs/element_ui/element.js"></script>
+    <script src="../publicJs/jquery-1.12.4.js"></script>
+    <script src="../publicJs/axios.js"></script>
+    <script src="../js/pub.js"></script>
+    <script src="../js/usercenter.js"></script>
+    <script>
+        // 左侧导航栏选择
+        $(document).ready(function (){
+            $(".navItem").each(function(index){
+                $(this).click(function(){ 
+                $(".navItem").removeClass("first");
+                $(".navItem").eq(index).addClass("first");
+				  $("#p8").hide();
+                });
+            });
+        });
+        window.location.href="#p1";
+    </script>
+</body>
+</html>

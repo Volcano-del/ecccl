@@ -1,0 +1,67 @@
+/* CSS Document */
+
+.opera{
+
+  position: absolute;
+  top: 162px;
+  left: 216px;
+
+}
+
+#btn
+
+{
+
+  width: 58px;
+  height: 58px;
+  color: #000;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+
+}
+
+#btn i{
+
+	display: block;
+   
+    padding: 7px 0 0;
+
+}
+
+#btn i:hover{
+  cursor: pointer;
+}
+
+input::-webkit-input-placeholder{
+  color: #cccccc;
+}
+
+/* 首页预览页 */
+.top_nav{
+  height: 45px;
+  display: flex;
+  font-size: 14px;
+  justify-content: space-around;
+  border-bottom: 1px solid #ccc;
+}
+.again_sec{
+  width: 330px;
+  display: flex;
+  line-height: 41px;
+  justify-content: space-around;
+  margin-left: 300px;
+}
+.again_sec a{
+  padding: 0 10px;
+  color: #333!important;
+  transition: color .3s!important;
+}
+.again_sec div:hover{
+  color: #dfaf89;
+} 
+.again_sec div{
+  display: inline-block;
+}

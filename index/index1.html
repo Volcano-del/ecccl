@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>商城首页</title>
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../iconfont/iconfont.css">
+  <link rel="stylesheet" href="../css/anindex1.css">
+  <link rel="stylesheet" href="./css/header1.css">
+  <link rel="stylesheet" href="../publicJs/element_ui/element.css">
+  <style>
+    #sure img {
+			   max-width: 100%;
+		   }
+    .part_con a:hover {
+      color: #ff1e32;
+    }
+    .usechange{
+      width: 108px;
+      display: inline-block;
+    }
+    .usechange div{
+      display: inline-block;
+    }
+    [v-cloak]{
+      display: none;
+    }
+    .active{
+      background-color: #FFF!important;
+      opacity: 0.7;
+    }
+    .el-pagination {
+      width: 1200px;
+      text-align: center;
+      position: fixed;
+      top: 88%;
+    }
+
+    .el-button {
+      border: 0px solid #DCDFE6;
+      padding: 5px 12px;
+    }
+    .el-popover {
+      height: 5px;
+      min-width: 37px;
+      padding: 12px;
+      line-height: 0.2;
+      font-size: 12px;
+    }
+    .box-show{
+     margin-top: #000;
+    }
+    .el-button:hover {
+        color: #409EFF;
+        border-color: transparent;
+        background-color: transparent;
+    }
+    .trumb{
+      color:#db2522!important;
+    }
+    .brey{
+      color: #ccc!important;
+    }
+  </style>
+</head>
+
+<body>
+ <div id="app" v-cloak>
+    <div class="top_nav" id="topBack">
+      <div style="width: 20px;height: 30px;display: inline-block;"></div>
+      <div class="again_sec">
+        <a href="#" v-show="show==1">
+          <div  @click="shouYe(1,true)">内容配置</div>
+        </a>
+        <a href="#">
+          <div  @click="shouYe(2,false)">个人中心</div>
+        </a>
+        <span class="usechange" v-show="show==1">
+          <a href="#">
+            <div @click="shouYe(3,false)">返回首页</div>
+          </a>
+        </span>
+      </div>
+    </div>
+    
+    <!-- logo+搜索框 -->
+    <div class="again_top" :style="{background:'url('+imurl+background_img+')'}">
+      <div class="again_tom">
+        <div class="again_img">
+          <img :src="imurl+Logoimg" alt="" >
+          <p class="again_font">{{step_name}}</p>
+        </div>
+        <div class="search">
+          <div class="search_input" :style="{'border-color':activeColor}">
+            <input v-model="param_remarks" maxlength="20" type="text" placeholder="搜索商品关键词" value="">
+            <a href="javascript:;" :style="{'background':activeColor}" @click="getshop(shop(4))" :class="{actise:isacs==4}">搜索</a>
+          </div> 
+        </div> 
+      </div>
+    </div>
+    
+
+    <!-- 导航 -->
+    <div class="navigation" :style="{'background-color':activeColor}">
+      <div class="nav_c w1200">
+        <div class="side_nav">
+            <div class="all_nav">
+              商品分类
+              <img src="./img/classify.png" alt="" class="nav_list"> 
+              <ul class="nav_classfity">
+                <li v-for="(vait,ix) of Navgitlist" :key="ix" @click="getshop(shop(4))" :class="{actise:isacs==4}">
+                  <div class="nav_iteam" v-if="onTrue" @click="Navtlist(vait.dictionary_id)">
+                    <span class="txt">{{vait.dictionary_name}}</span>
+                  </div>
+                  <div class="nav_iteama" v-if="onFalse" @click="Navtlist(vait.dictionary_id)">
+                    <span class="txt">{{vait.dictionary_name}}</span>
+                  </div>
+                  <div class="nav_iteamb" v-if="onEles" @click="Navtlist(vait.dictionary_id)">
+                    <span class="txt">{{vait.dictionary_name}}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <p class="side_p"></p>
+            <div class="side_sec">
+              <span @click="shop(1)" :class="{actise:isacs==1}">首页</span>
+              <span @click="shop(2)" :class="{actise:isacs==2}">软文推广</span>
+              <span @click="shop(3)" :class="{actise:isacs==3}">短视频</span>
+              <span @click="shop(4)" :class="{actise:isacs==4}">商品列表</span>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+
+
+      <!-- 首页内容 -->
+      <div id="shouye" class="nose" :class="{ashow:isacs==1}" >
+        <!-- banner轮播图 -->
+        <div class="banner">
+          <!-- 轮播箭头 -->
+          <div class="arrow_banner">
+            <span class="left">
+              <img src="img/arrow-l.png" alt="上一张">
+            </span>
+            <span class="right">
+              <img src="img/arrow-r.png" alt="下一张">
+            </span>
+          </div>
+          <!-- 轮播图片 -->
+          <div class="banner_list">
+            <ul>
+              <li v-for="(value,index) of lunboimglist">
+                <a href="javascript:;">
+                  <img :src="imurl+value" alt="#">
+                </a>
+              </li> 
+            </ul>
+          </div>
+          <div class="clearfix"></div>
+          <!-- 轮播图下方圆点 -->
+          <ul class="banner_btn">
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div  style="width: 58px; position: fixed;top: 63%;border-radius: 3px;left: 92%; height: 58px;box-shadow: 0px 0 9px 0 rgba(0,0,0,.2)" :style="{'background-color':aolor}">
+          <span id="btn" @click="niceIn(1,1)" :class="{'num':isniceIn}" :style="{'color':whir}" >
+            <i class="iconfont" :class="{'niceIn':isniceIn}">&#xe602;</i> {{shoustr}}
+          </span>
+        </div>
+
+        <!-- 店铺爆款专区 -->
+        <div class="left_main" :style="{background:'url('+imurl+dibackImageUrl+')'}">
+          <!-- 顶部title -->
+          <div class="cont_title">
+            <img :src="imurl+diMoImageUrl" alt="">
+          </div>
+          <!-- 中间商品 -->
+          <div class="cont_shop">
+            <div v-for="(item,index) of goods">
+              <div class="cont_img1" v-if="item.biaoti!=null && item.radio==0 && allcolo==1">
+                <div class="cont_content" @click="detail(item.id)">
+                  <div class="cont_imgurl">
+                    <img :src="imurl+item.dizhuImageUrl" alt="">
+                  </div>
+                  <div class="cont_s">
+                    <div class="cont_jie">
+                      <div class="jie1">{{item.biaoti}}</div>
+                      <div class="jie2">{{item.description}}</div>
+                      <div class="jie3" :style="{'background-color':activeColor}" v-if="item.radio1==0">
+                        <span>下单立减{{item.goods_minus1}}元</span>
+                      </div>
+                      <div class="jie4">
+                        <div class="jie4_price">到手低至</div>
+                        <div class="jie4_qian"> 
+                          <span>￥</span>
+                          <span>{{item.price_shou}}</span>
+                        </div>  
+                      </div>
+                      <div class="jie5" :style="{'background-color':activeColor}">
+                        <span>立即购买</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cont_img2" v-if="item.biaoti!=null && item.radio==0 && allcolo==2">
+                <div class="cont_content" @click="detail(item.id)">
+                  <div class="cont_imgurl">
+                    <img :src="imurl+item.dizhuImageUrl" alt="">
+                  </div>
+                  <div class="cont_s">
+                    <div class="cont_jie">
+                      <div class="jie1">{{item.biaoti}}</div>
+                      <div class="jie2">{{item.description}}</div>
+                      <div class="jie3" :style="{'background-color':activeColor}" v-if="item.radio1==0">
+                        <span>下单立减{{item.goods_minus1}}元</span>
+                      </div>
+                      <div class="jie4">
+                        <div class="jie4_price">到手低至</div>
+                        <div class="jie4_qian"> 
+                          <span>￥</span>
+                          <span>{{item.price_shou}}</span>
+                        </div>  
+                      </div>
+                      <div class="jie5" :style="{'background-color':activeColor}">
+                        <span>立即购买</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cont_img5" v-if="item.biaoti!=null && item.radio==0 && allcolo==3">
+                <div class="cont_content" @click="detail(item.id)">
+                  <div class="cont_imgurl">
+                    <img :src="imurl+item.dizhuImageUrl" alt="">
+                  </div>
+                  <div class="cont_s">
+                    <div class="cont_jie">
+                      <div class="jie1">{{item.biaoti}}</div>
+                      <div class="jie2">{{item.description}}</div>
+                      <div class="jie3" :style="{'background-color':activeColor}" v-if="item.radio1==0">
+                        <span>下单立减{{item.goods_minus1}}元</span>
+                      </div>
+                      <div class="jie4">
+                        <div class="jie4_price">到手低至</div>
+                        <div class="jie4_qian"> 
+                          <span>￥</span>
+                          <span>{{item.price_shou}}</span>
+                        </div>  
+                      </div>
+                      <div class="jie5" :style="{'background-color':activeColor}">
+                        <span>立即购买</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cont_img3" v-if="item.biaoti!=null && item.radio==1 && allcolo==1">
+                <div class="cont_contents" @click="detail(item.id)">
+                  <div class="cont_imgurl">
+                    <img :src="imurl+item.dizhuImageUrl" alt="">
+                  </div>
+                  <div class="cont_s">
+                    <div class="cont_jie">
+                      <div class="jie1">{{item.biaoti}}</div>
+                      <div class="jie2">{{item.description}}</div>
+                      <div class="jie3" :style="{'background-color':activeColor}" v-if="item.radio1==0">
+                        <span>下单立减{{item.goods_minus1}}元</span>
+                      </div>
+                      <div class="jie4">
+                        <div class="jie4_price">到手低至</div>
+                        <div class="jie4_qian"> 
+                          <span>￥</span>
+                          <span>{{item.price_shou}}</span>
+                        </div>  
+                      </div>
+                      <div class="jie5" :style="{'background-color':activeColor}">
+                        <span>立即购买</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cont_img4" v-if="item.biaoti!=null && item.radio==1 && allcolo==2">
+                <div class="cont_contents" @click="detail(item.id)">
+                  <div class="cont_imgurl">
+                    <img :src="imurl+item.dizhuImageUrl" alt="">
+                  </div>
+                  <div class="cont_s">
+                    <div class="cont_jie">
+                      <div class="jie1">{{item.biaoti}}</div>
+                      <div class="jie2">{{item.description}}</div>
+                      <div class="jie3" :style="{'background-color':activeColor}" v-if="item.radio1==0">
+                        <span>下单立减{{item.goods_minus1}}元</span>
+                      </div>
+                      <div class="jie4">
+                        <div class="jie4_price">到手低至</div>
+                        <div class="jie4_qian"> 
+                          <span>￥</span>
+                          <span>{{item.price_shou}}</span>
+                        </div>  
+                      </div>
+                      <div class="jie5" :style="{'background-color':activeColor}">
+                        <span>立即购买</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cont_img6" v-if="item.biaoti!=null && item.radio==1 && allcolo==3">
+                <div class="cont_contents" @click="detail(item.id)">
+                  <div class="cont_imgurl">
+                    <img :src="imurl+item.dizhuImageUrl" alt="">
+                  </div>
+                  <div class="cont_s">
+                    <div class="cont_jie">
+                      <div class="jie1">{{item.biaoti}}</div>
+                      <div class="jie2">{{item.description}}</div>
+                      <div class="jie3" :style="{'background-color':activeColor}" v-if="item.radio1==0">
+                        <span>下单立减{{item.goods_minus1}}元</span>
+                      </div>
+                      <div class="jie4">
+                        <div class="jie4_price">到手低至</div>
+                        <div class="jie4_qian"> 
+                          <span>￥</span>
+                          <span>{{item.price_shou}}</span>
+                        </div>  
+                      </div>
+                      <div class="jie5" :style="{'background-color':activeColor}">
+                        <span>立即购买</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 返回顶部 -->
+          <a href="#topBack">
+          <div class="cont_back">
+              <img :src="imurl+diTopImageUrl" alt="">
+            </div>
+          </a>
+        </div>
+    
+        <!-- 底部、售后 -->
+        <div class="bottom">
+          <div class="After_sale">
+            <!-- 品质保障 -->
+            <div class="good">
+              <img src="img/you.png" alt="品质保障">
+              <p class="p1">品质保障</p>
+              <p class="p2">品质护航 购物无忧</p>
+            </div>
+            <div class="good">
+              <img src="img/qi.png" alt="品质保障">
+              <p class="p1">七天无理由退换货</p>
+              <p class="p2">为您提供售后无忧保障</p>
+            </div>
+            <div class="good">
+              <img src="img/te.png" alt="品质保障">
+              <p class="p1">特色服务体验</p>
+              <p class="p2">为您呈现不一样的服务</p>
+            </div>
+            <div class="good good2">
+              <img src="img/help.png" alt="品质保障">
+              <p class="p1">帮助中心</p>
+              <p class="p2">您的购物指南</p>
+            </div>
+          </div>
+        </div>
+    <!-- 底部菜单 -->
+        <div class="bottom_list">
+          <div class="bottom_text">
+            <div class="bottom_item">
+              <div class="text_item">
+                <p>购物指南</p>
+                <ul>
+                  <li>
+                    <a href="javascript:;">购物流程</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">会员介绍</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">生活旅行/团购</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">常见问题</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">大家点</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">联系客服</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="text_item">
+                <p>配送方式</p>
+                <ul>
+                  <li>
+                    <a href="javascript:;">上门自提</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">211限时达</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">配送服务查询</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">配送费收取标准</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">海外配送</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="text_item">
+                <p>支付方式</p>
+                <ul>
+                  <li>
+                    <a href="javascript:;">快捷支付</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">信用卡</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">余额宝</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">蚂蚁花呗</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">货到付款</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="text_item">
+                <p>售后服务</p>
+                <ul>
+                  <li>
+                    <a href="javascript:;">售后服务</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">价格保护</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">退款说明</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">返修/退换货</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">取消订单</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- 版权所有 -->
+            <div class="cop_tech" style="width: 530px;display: flex;">
+              <p class="cop">©2012-2019 河南牧业经济学院</p>
+              <p class="tech">豫ICP备15026586</p>
+              <p>英才校区地址：郑州市惠济区英才街146号</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 软文列表 -->
+      <div id="edit" :class="{ashow:isacs==2}" class="nose">
+        <div class="center band" style="min-height: 650px;height: auto;">
+          <div class="navCont atc" id="p1" :style="{'border-top':objStyles}">
+              <div class="contTi" :style="{'border-bottom':objStyles}">
+                <span @click="goback">软文列表</span>
+                <span v-show="show2" >/ 软文内容</span>
+              </div>
+              <div class="counter" >
+                <div class="container clearfix container_h container_w2" v-if="artlicelist.length != '0'">
+                  <a class="index_a" style="position: relative;" v-for="(value,index) of artlicelist" :key="index" @click="look(value.id)">
+                      <div >
+                          <div class="Titlelaw ">
+                              <div class="TitleLawOnr over_3">{{value.softArticle_name}}</div>
+                          </div>
+                      </div>
+                      <div style="position: absolute;top: 86px;left: 266px;">
+                          <div>
+                              <div class="TitleLawthree">{{value.add_time.slice(0,11)}}</div>
+                          </div>
+                      </div>
+                  </a>
+                </div>
+                <div v-else class="none_list" >
+                  没有多余数据....
+                </div>
+                <div class="block">
+                  <el-pagination
+                   @current-change="handleCurrent"
+                    :page-size="pageSize"
+                    layout="prev, pager, next"
+                    :total="total">
+                  </el-pagination>
+                </div>
+              </div>
+              <div class="surelist">
+                <div class="art_title">{{surelistname}}</div>
+                <div class="art_time">
+                  {{addtime}}
+                  <div  style="display: inline-block;">
+                    <span id="btn " @click="niceIn(2,vaiue_id)" :class="{'num':isniceIn}" style="height: 25px;display: flex;justify-content: space-around;width: 33px;margin-left: 15px;" :style="{'color':editcol}">
+                      <i class="iconfont " :class="{'niceIn':isniceIn}"  >&#xe602;</i> 
+                      <p >{{editstr}}</p>
+                    </span>
+                  </div>
+                </div>
+                <div id="sure">{{surelist}}</div>
+              </div>
+          </div>
+      </div>
+      </div>
+
+      <!-- 视频列表列表 -->
+      <div id="video" :class="{ashow:isacs==3}" class="nose">
+        <div class="center band" style="height: 650px;margin-top: 30px;">
+          <div class="navCont atc" id="p1" :style="{'border-top':objStyles}">
+              <div class="contTitle" :style="{'border-bottom':objStyles}">
+                视频列表
+              </div>
+              <div class="line" v-if="videoList.length != 0 " >
+                <div class="line_video" v-for="(item,index) of videoList">
+                  <video :src="visurl+item.video_url" style="width: 283px;height: 160px;"  controls="controls"></video>
+                  <p class="sec_P">
+                    <el-popover
+                      placement="bottom-start"
+                      height="50"
+                      trigger="hover"
+                      :content=`${item.video_name}`>
+                      <el-button slot="reference"> {{item.video_name.length>6?`${item.video_name.substring(0,6)}`:`${item.video_name}`}}</el-button>
+                    </el-popover>
+                  </p>
+                  <div class="opera">
+                    <span id="btn" @click="niceIn(3,item.id,item.video_name,item.fabulous_state)" :class="{'num':isniceIn==item.id}" class="brey" style="height: 25px;display: flex;justify-content: space-around;width: 33px;margin: 6px 0 0 15px;" v-if="item.fabulous_state % 2 == 0">
+                      <i class="iconfont" :class="{'niceIn':isniceIn==item.id}" style="display: inline;padding: 0px;">&#xe602;</i> 
+                      <p>{{item.bonus_points}}</p>
+                    </span>
+                    <span id="btn" @click="niceIn(3,item.id,item.video_name,item.fabulous_state)" :class="{'num':isniceIn==item.id}" style="height: 25px;display: flex;justify-content: space-around;width: 33px;margin: 6px 0 0 15px;" class="trumb" v-else>
+                      <i class="iconfont" :class="{'niceIn':isniceIn==item.id}" style="display: inline;padding: 0px;">&#xe602;</i> 
+                      <p>{{item.bonus_points}}</p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="none_list" style="margin-top:25px">
+                没有多余数据....
+              </div>
+               <!-- 分页 -->
+               <div class="block" style="margin-top: 25px;text-align: center;">
+                <el-pagination
+                  :page-size="PageSize"
+                  layout="prev, pager, next"
+                  :total="taol" 
+                  @current-change="handleCurrentChange">
+                </el-pagination>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 商品列表 -->
+      <div id="video" :class="{ashow:isacs==4}" class="nose">
+        <div class="center band" style="height: 650px;margin-top: 30px;">
+          <div class="navCont atc" id="p1 p3" :style="{'border-top':objStyles}">
+              <div class="contTitle" :style="{'border-bottom':objStyles}">
+                商品列表
+              </div>
+              <div class="line" v-if="shoplist.length != 0 " >
+                <div class="goods_list" v-for="(item,index) of shoplist" :key="index" style="width: 224px;height: 350px;" @click="goemel(item.id)">
+                  <div class="jh">
+                    <img :src="imurl+item.goods_pic" style="width: 100%;height: 100%;"  controls="controls" ></img>
+                    <div class="price p_left" :style="{'color':activeColor}">
+                      ￥
+                      <span class="num">{{item.goods_price}}</span>
+                    </div>
+                    <div class="goods p_left">{{item.goods_name}}</div>
+                    <!-- 商品店铺名 -->
+                    <div class="shop_name"></div>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="none_list" style="margin-top:25px">
+                没有多余数据....
+              </div>
+               <!-- 分页 -->
+               <div class="block" style="margin-top: 25px;text-align: center;">
+                <el-pagination
+                  :page-size="PAgesize"
+                  layout="prev, pager, next"
+                  :total="totalCount" 
+                  @current-change="haurrentChange">
+                </el-pagination>
+              </div>
+          </div>
+        </div>
+      </div>
+ </div>
+  <script src="../publicJs/vue.js"></script>
+  <script src="../publicJs/axios.js"></script>
+  <script src="../js/pub.js"></script>
+  <script src="../publicJs/jquery.js"></script>
+  <script src="../publicJs/element_ui/element.js"></script>
+  <script src="../js/index1.js"></script>
+  <script src="../js/publink.js"></script>
+  <script src="../js/show.js"></script>
+  <script src="../publicJs/jquery.js"></script>
+  <script>
+    (setTimeout(
+      function () {
+      var banner = document.querySelector('.banner');
+      var banner_list = document.querySelector('.banner_list ul');
+      var left = document.querySelector('.left');
+      var right = document.querySelector('.right');
+      var btn = document.querySelector('.banner_btn');
+      // 克隆第一张图片，并添加到元素的最后
+        var firstClone = banner_list.children[0].cloneNode(true);
+      // 
+      banner_list.appendChild(firstClone);
+      // 设置图片盒子的总宽度
+      var len = banner_list.children.length;
+      // console.log(len)
+      banner_list.style.width = 1920 * len + 'px';
+      // 创建图片对应的点的个数
+      for (var j = 0; j < len - 1; j++) {
+        var liNav = document.createElement('li')
+        btn.appendChild(liNav);
+      }
+      btn.children[0].className="active"
+
+      var btnli = document.querySelectorAll('.banner_btn li');
+      var n = 0; //用来记录banner_list的偏移量
+      var time; //计时器，控制图片的移动
+      var index = 0; //记录图片的个数，也就是图片的下标
+      var btnIndex = 0; //记录点的下标
+      var flag = true; //开关，控制用户的操作
+      right.onclick = nextImg;
+      function nextImg() {
+        if (flag) {
+          // 进入操作，直接flag赋值为false,相当于门被反锁了，其他的操作就无法进行
+          flag = false;
+          index++;
+          btnIndex++;
+          // console.log(index,btnIndex,btnli.length)
+          if (btnIndex > btnli.length - 1) {
+            btnIndex = 0;
+          }
+          time = setInterval(moveLeft, 16.7)
+        }
+      }
+      // 下一张图片
+      function moveLeft() {
+        n += 28;
+        // console.log(n,index)
+        if (n >= 1920 * index) {
+          clearInterval(time);
+          flag = true;
+          
+        }
+        if (n >= ((len - 1) * 1920)) {
+          n = 0;
+          index = 0;
+        }
+        // console.log(n)
+        banner_list.style.marginLeft = -n + 'px';
+        changeBtn();
+      }
+      // 控制点的样式
+      function changeBtn() {
+        // 重置点的样式
+        for (var i = 0; i < btnli.length; i++) {
+          btnli[i].className = '';
+        }
+        // 控制点的样式改变
+        btnli[btnIndex].className = "active";
+      }
+      // 点击左箭头，切换上一张图片
+      left.onclick = function () {
+        // 进行操作之前判断门是打开的还是关闭
+        if (flag) {
+          flag = false;
+          index--;
+          btnIndex--;
+          time = setInterval(moveRight, 16.7)
+        }
+      }
+      // 上一张
+      function moveRight() {
+        // 如果偏移量x = 0;则对应的图片是第一张，点击切换上一张，意味着看最后一张，最后一张图对应的下标为3；所以为len -2 ;此时x的偏移量应重置为3000，既移动到克隆的那张图片；然后过度到第四张图片
+        if (n <= 0) {
+          n = (len - 1) * 1920;
+          index = len - 2;
+          btnIndex = btnli.length - 1;
+        }
+        n -= 50;
+        if (n <= 1920 * index) {
+          clearInterval(time);
+          flag = true;
+        }
+        banner_list.style.marginLeft = -n + 'px';
+        changeBtn();
+      }
+      // 点击点切换图片，给点绑定上点击事件
+      for (var i = 0; i < btnli.length; i++) {
+        btnli[i].index = i;
+        btnli[i].onclick = function () {
+          if (flag) {
+            flag = false;
+            console.log(this.index, index)
+            if (this.index > index) {
+              // 意味看下一张
+              // 切换到我点击的点对应的图片
+              index = this.index;
+              // 记录点的下标和当前点击的点的下标对应一致
+              btnIndex = this.index;
+              time = setInterval(moveLeft, 16.7);
+            } else if (this.index < index) {
+              // 切换到我点击的点对应的图片
+              index = this.index;
+              // 记录点的下标和当前点击的点的下标对应一致
+              btnIndex = this.index;
+              // 意味看上一张
+              time = setInterval(moveRight, 16.7)
+            }
+          }
+
+        }
+      }
+      // 自动播放
+      var autoPlay = setInterval(nextImg, 5000);
+      // 清除自动播放
+      banner.onmouseover = function() {
+          clearInterval(autoPlay)
+      }
+      banner.onmouseout = function() {
+          autoPlay = setInterval(nextImg, 5000);
+      }
+    }, 1000))
+  </script>
+</body>
+</html>

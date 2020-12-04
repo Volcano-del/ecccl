@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>软文推广实验</title>
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/usecenter.css">
+  <link rel="stylesheet" href="../publicJs/element_ui/element.css">
+  <style>
+    #p1{
+      display: block!important;
+      height: 580px;
+    }
+    .navCont {
+      width: 1200px;
+      position: relative;
+    }
+    .line{
+      position: absolute;
+      top: 18%;
+      left: 10%;
+    }
+    #content{
+      width: 840px!important;
+    }
+    .newline{
+      height: 50px;
+      line-height: 50px;
+      font-size: 14px;
+      font-weight: normal;
+      font-stretch: normal;
+      letter-spacing: 0px;
+      color: #333333;
+      display: flex;
+      margin-bottom: 20px;
+      position: absolute;
+      top: 90%;
+      left: 35%;
+    }
+    .newline lineTitle{
+      text-align: right;
+      width: 61px;
+      margin-right: 15px;
+    }
+    .newline .btn_save,.btn_cancel{
+      width: 100px;
+      height: 40px;
+      border-radius: 2px;
+      font-size: 14px;
+      font-weight: normal;
+      font-stretch: normal;
+      line-height: 40px;
+      letter-spacing: 0px;
+      color: #55595c;
+      text-align: center;
+      cursor: pointer;
+      display: inline-block;
+      margin-right: 20px;
+    }
+    .newline .btn_save{
+      background-color: #eccaae;
+      border-color: #dfaf89;
+      transition: all .3s;
+    }
+    .newline .btn_save:hover{
+      background-color: #dfaf89;
+    }
+    .newline .btn_save a{
+      color: #fff;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .newline .btn_cancel {
+      border: solid 1px #e8e8e8;
+      transition: all .3s;
+    }
+    .newline .btn_cancel a{
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .newline .btn_cancel:hover {
+      background-color: #e8e8e8;
+    }
+
+.top{
+    width: 100%;
+    min-width: 1200px;
+    height: 81px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    position: relative;
+    overflow: hidden;
+}
+.top::before{
+    content: "";
+    position: absolute;
+    left: 35%;
+    width: 215px;
+    height: 100px;
+    background-color: #fff;
+    transform: translate(-52px,40px) rotate(30deg);
+}
+.top::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 35%;
+    height: 81px;
+    background-color: #fff;
+}
+.use_handler{
+    /* margin-left: 600px; */
+    display: flex;
+    margin-top: 25px;
+}
+.btn_black a{
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn_white a{
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.arrow_banner {
+      display: flex;
+      justify-content: space-between;
+      width: 1200px;
+      height: 80px;
+      margin: 0 auto;
+      position: absolute;
+      top: 50%;
+      margin-top: -40px;
+      left: 19%;
+    }
+
+    .arrow_banner span {
+      /* display: block; */
+      width: 45px;
+      height: 80px;
+      background-color: rgba(0, 0, 0, 0.3);
+      line-height: 80px;
+      text-align: center;
+      cursor: pointer;
+      display: none;
+      transition: all 1s;
+    }
+
+    .arrow_banner span img {
+      vertical-align: middle;
+      border-style: none;
+    }
+
+    .banner:hover .arrow_left {
+      display: block;
+
+    }
+
+    .banner:hover .arrow_right {
+      display: block;
+    }
+
+    .arrow_left:hover,
+    .arrow_left:active {
+      background-color: rgba(0, 0, 0, 1);
+    }
+    /* 顶 */
+    .con{
+      width:1200px;
+      margin:0 auto;
+      display: flex;
+      justify-content: space-between;
+      z-index: 999;
+    }
+    .con .left{
+      padding-top: 16px;
+    }
+    .cont>div {
+      width:863px;
+      height: 39px;
+      margin: 45px auto;
+    }
+    .cont div:first-child input{
+      width: 505px;
+      height: 35px;
+      margin-right: 266px;
+      padding-left: 5px;
+    }
+    .cont div:first-child input:focus{
+      border-color: #dfaf89;
+    }
+    .cke_contents{
+      max-height: 258px!important;
+      min-height: 258px!important;
+    }
+    .el-breadcrumb{
+      display: inline-block;
+    }
+    .el-breadcrumb__inner a:hover{
+      color: #dfaf89;
+      cursor: pointer;
+    }
+  </style>
+    
+</head>
+<script src="./ckeditor4-major/ckeditor.js"></script>
+
+<body >
+  <div id="editor" v-cloak>
+    <div class="top">
+      <div class="con">
+        <div class="left">
+          <img src="../img/logo.png" alt="">
+        </div>
+        <div class="use_handler">
+          <div class="btn_black"  @click="goover(true)">
+            <a>返回首页</a>
+          </div>
+          <div class="btn_white"  @click="goover(false)">
+            <a >个人中心</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="head">
+        <div class="center">
+          软文推广实验
+        </div>
+    </div>
+    <div class="locate">
+      <div class="center">
+        <i class="icon"></i>
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item><a href="../index.html">首页</a></el-breadcrumb-item>
+            <el-breadcrumb-item><a @click="use(true)">个人中心</a></el-breadcrumb-item>
+            <el-breadcrumb-item><a @click="ruan(true)">软文列表</a></el-breadcrumb-item>
+            <el-breadcrumb-item>内容编辑</el-breadcrumb-item>
+          </el-breadcrumb>
+      </div>
+    </div>
+    <div class="center band">
+      <div class="navCont" id="p1" >
+          <!-- <div class="contTitle">
+            软文推广
+          </div> -->
+          <div class="cont">
+              <div style="font-size: 18px;">
+                文章标题：<input type="text" placeholder="请输入文章标题" v-model="artname">
+                <!-- <el-button type="primary" @click="GoArtList">文章列表</el-button> -->
+              </div>
+              <div>
+                  <div class="cont_l">
+                      <div class="line" >
+                        <form>
+                          <textarea name="editor1" id="editor1" rows="10" cols="80">
+                              
+                          </textarea>
+                      </form>
+                      </div>
+                      <div class="newline">
+                          <div class="lineTitle"></div>
+                          <div>
+                              <div class="btn_save">
+                                <a href="#" @click="getContent">提交</a>
+                              </div>
+                              <div class="btn_cancel">
+                                <a href="#" @click="goback">取消</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+  <script src="../publicJs/vue.js"></script>
+  <script src="../publicJs/element_ui/element.js"></script>
+  <script src="../publicJs/axios.js"></script>
+  <script src="../js/pub.js"></script>
+
+<script>
+  var app= new Vue({
+    el:"#editor",
+    data:{
+      jsn:'',
+      artname:'',
+      lastname:'',
+      lasna:'',
+      studentid:'',
+      form_name:''
+    },
+    created(){
+      this.lastname = sessionStorage.getItem("msg");
+      
+      if(this.lastname!=null){
+        this.lasna = sessionStorage.getItem("dept_id");
+        this.studentid=pub._LinkParm('student_id');//学生学号
+      }else{
+        window.location.href="../html/login.html"
+      }
+      var stname=JSON.parse(sessionStorage.getItem("msg"));
+      if(stname!=null){
+              this.magName=stname.student_id;
+              this.user_id=stname.student_id;
+              // this.getinit(); 
+      }else{
+        window.location.href="../html/login.html";
+      }
+    },
+    methods:{
+        use(obj){
+          if(obj){
+            window.location.href="../html/usecenter.html?student_id="+this.magName
+          }else{
+            sessionStorage.clear();
+			      window.location.href="../index.html"
+          }
+        },
+        ruan(obj){
+          if(obj){
+            window.location.href="../html/editor_list.html?student_id="+this.magName
+          }else{
+            sessionStorage.clear();
+			      window.location.href="../index.html"
+          }
+        },
+        getContent() {
+          var timestamp = (new Date()).getTime()/1000;
+          var data = CKEDITOR.instances.editor1.getData();//获取编辑器内容，带标签
+          var _this=this;
+          if(_this.artname=='' || data==''){
+            _this.$message.error("请完善标题或内容")
+          }else{
+                pub._InitAxios({
+              _url:pub._url,
+              ur:pub._DetailApi.makeSoftArticle,
+              data:{
+                "student_id":_this.studentid,
+                "dept_id":_this.lasna,
+                "testReport_sign":timestamp,
+                "experiment_module_data":{
+                "softArticle_name":_this.artname,
+                "softArticle_content":data
+                } },
+              cbk: function cbk(res){
+
+                if(res.stateCode == '200'){
+                  _this.$message({
+                    message: '提交成功',
+                    type: 'success'
+                  });
+                  _this.softArticle_name='';
+                  _this.data='';
+                  setTimeout(()=>{
+                    window.location.href="./editor_list.html?student_id="+_this.studentid
+                  },1000)
+                  }else{
+                    _this.$message.error('保存失败，请在此尝试');
+                  }
+              }
+            })
+          } 
+      },
+      goover(tag){
+        var url
+        if(tag){
+          url='../index.html'
+        }else{
+          url="./usecenter.html?student_id="+this.studentid
+        }
+        window.location.href=url;
+      },
+      goback(){
+        window.location.href="./editor_list.html?student_id="+this.studentid
+      }
+    }
+  })
+</script>
+<script>
+  var url=pub._url+'api/fileUp';
+  
+  CKEDITOR.replace( 'editor1' );
+  CKEDITOR.on('instanceReady', function(e) {
+      e.editor.widgets.on('instanceCreated', function(params) {
+      })
+      var upload = e.editor.uploadRepository
+      upload.on('instanceCreated', function(eve) {
+      })
+      e.editor.on('change', function(change) {
+      })
+      e.editor.on( 'fileUploadRequest', function( evt ) {
+        var fileLoader = evt.data.fileLoader,
+        formData = new FormData(),
+        xhr = fileLoader.xhr;
+        xhr.open( 'post', url, true );
+        formData.append( 'file', fileLoader.file, fileLoader.fileName );
+
+        fileLoader.xhr.send( formData );
+        // Prevented the default behavior.
+        evt.stop();
+      })
+      e.editor.on( 'fileUploadResponse', function( evt ) {
+          // Prevent the default response handler.
+            evt.stop();
+        // Get XHR and response.
+            var data = evt.data,
+            xhr = data.fileLoader.xhr;
+            response = xhr.responseText.split( '|' );
+            var respon=JSON.parse(response[0]).data.files[0];
+        if ( response[ 1 ] ) {
+            // An error occurred during upload.
+            data.message = response[ 1 ];
+            evt.cancel();
+        } else {
+            data.url =pub._url+ respon;
+        }
+      })
+})
+</script>
+</body>
+</html>

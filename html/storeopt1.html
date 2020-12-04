@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>店铺优化实验</title>
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../css/storeopt1.css">
+  <link rel="stylesheet" href="../publicJs/element_ui/element.css">
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+    #app {
+      height: 100%;
+      width: 100%;
+    }
+
+    .item_wrapmu{
+      display: none;
+    }
+    .item_wrap {
+      display: none;
+    }
+
+    .right_point li {
+      width: 160px;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .el-tabs__content {
+      padding-left: 0px;
+    }
+
+    .avatar-uploader .el-upload {
+      border: 2px solid #eeeeee;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      margin-left:3px;
+    }
+
+    .avatar-uploader .el-upload:hover {
+      border-color: #dfaf89;
+    }
+    .el-upload--picture-card{
+      border: 2px solid #eeeeee;
+      border-radius: 0%;
+    }
+
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 130px !important;
+      text-align: center;
+    }
+    .bao_card .avatar-uploader-icon{
+      width: 180px;
+      height: 90px;
+      line-height: 90px !important;
+    }
+
+    .ye_card .avatar {
+      width: 138px;
+      height: 138px;
+      display: block;
+    }
+    .bao_card .avatar{
+      width: 180px;
+      height: 90px;
+      display: block;
+    }
+    .s_count .avatar-uploader .el-upload {
+        width:85px;
+        height: 60px;
+      }
+      
+      .s_count .avatar-uploader-icon {
+        margin: -60px -60px;
+      }
+      .s_d{
+        width: 110px;
+        height: 100px;
+        position: absolute;
+        border: 1px dashed #ccc;
+        top: 8%;
+        left: 42%;
+      }
+    .hide .el-upload--picture-card {
+      display: none;
+    }
+    .ye_card .el-upload--picture-card{
+      width: 138px;
+      height: 138px;
+    }
+    .ye_card .avatar-uploader-icon{
+      width: 138px;
+      height: 138px;
+    }
+    .bao_card .el-upload--picture-card,.lun_card .el-upload--picture-card{
+      width: 180px;
+      height: 90px;
+    }
+    .bao_card .el-upload--picture-card,.lun_card .el-upload--picture-card{
+      line-height: 95px;
+    }
+    .lun_card .el-upload-list--picture-card .el-upload-list__item{
+      width: 180px;
+      height: 90px;
+      border-radius: 0%;
+    }
+    .el-radio__input.is-checked .el-radio__inner{
+      border-color: #dfaf89!important;
+      background: #dfaf89!important;
+    }
+    .el-radio__input.is-checked+.el-radio__label{
+      color: #dfaf89!important;
+    }
+
+    .s_name .el-input__inner{
+      width: 170px;
+    }
+    .s_count .el-input__inner{
+      width: 419px;
+    }
+    .el-input__inner{
+      border-radius: 0%;
+      padding: 0 10px;
+    }
+    .el-textarea__inner{
+      width: 419px;
+      height: 72px !important;
+      min-height: 72px !important;
+      border-radius: 0%;
+      font-family: inherit;
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+<body id="bod">
+  <div id="app" v-cloak>
+    <!-- 左侧下拉框  进行颜色和模板得选择 -->
+    <div class="right">
+      <div class="right_point">
+        <li>
+          <div class="item_mu">
+            店铺首页模板
+            <img src="../img/ar_down.png" alt="" class="arrow_img">
+          </div>
+          <div class="item_wrapmu">
+            <div class="right_top" v-for="(value,ix) of indexshoe" :key="ix">
+              <img v-if="ix==1" :src="value.img" alt="" class="right_litter right_tem2" @click="changesol(value.name,ix)">
+              <img v-else :src="value.img" alt="" class="right_litter" @click="changesol(value.name,ix)">
+              <p>{{value.name}}</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item">
+            店铺首页配色
+            <img src="../img/ar_down.png" alt="" class="arrow_img">
+          </div>
+          <div class="item_wrap">
+            <div class="right_top" v-for="(item,index) of indexlist">
+              <img v-if="index+1==color" :src="item.img" alt="" class="right_litter right_tem2" @click="change(true,item.id)">
+              <img v-else :src="item.img" alt="" class="right_litter" @click="change(true,item.id)">
+              <p>{{item.name}}</p>
+            </div>
+          </div>
+        </li>
+      </div>
+    </div>
+
+    <!-- 头部 -->
+    <div class="left">
+      <div class="tou">
+        <!-- 头部右侧 -->
+        <div class="right_but">
+          <a target="_blank">
+            <button @click="shotsee(false)">预览</button>
+            <button @click="shotsee(true)">个人中心</button>
+          </a>
+        </div>
+      </div>
+    
+      <!-- 右侧内容 -->
+      <!-- 页头 -->
+      <div class="yetou">
+        <p>页头</p>
+        <button class="buttoncom" @click="editor(1)">编辑</button>
+      </div>
+      <!-- logo+搜索框 -->
+      <div class="again_top">
+        <div class="again_tom">
+          <div class="again_img">
+            <img src="../img/index/logo1.png" alt="">
+          </div>
+          <div class="search">
+            <div class="search_input" :style="{'border-color':activeColor}">
+              <input maxlength="20" type="text" placeholder="搜索商品关键词" value="">
+              <a href="javascript:;" :style="{'background':activeColor}">搜本店</a>
+            </div> 
+          </div> 
+        </div>
+      </div>
+  
+      <!-- 导航 -->
+      <div class="navigation" :style="{'background-color':activeColor}" >
+        <div class="nav_c w1200">
+          <div class="side_nav">
+              <div class="all_nav">
+              商品分类
+              <img src="../img/index/classify.png" alt="" class="nav_list"> 
+              </div>
+              <p class="side_p"></p>
+              <div class="side_sec">
+                <span>首页</span>
+                <span>软文推广</span>
+                <span>短视频</span>
+                <span>商品列表</span>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 中间过渡层 -->
+      <div class="left_sec">
+        <p>以上为页头区域</p>
+      </div>
+
+      <!-- 图片轮播 -->
+      <div class="lunbo">
+        <p>图片轮播</p>
+        <button class="buttoncom" @click="editor(4)">编辑</button>
+      </div>
+
+      <!-- 轮播图内容 -->
+      <!-- banner轮播图 -->
+      <div class="banner">
+        <!-- 轮播箭头 -->
+        <div class="arrow_banner">
+          <span class="arrow_left">
+            <img src="../img/index/arrow-l.png" alt="上一张">
+          </span>
+          <span class="arrow_right">
+            <img src="../img/index/arrow-r.png" alt="下一张">
+          </span>
+        </div>
+        <!-- 轮播图片 -->
+        <div class="banner_list">
+          <ul>
+            <li v-for="(value,index) of imglist">
+              <a href="javascript:;">
+                <img :src="value.image" alt="banner2">
+              </a>
+            </li> 
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+        <!-- 轮播图下方圆点 -->
+        <ul class="banner_btn">
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+
+      <!-- 宝贝推荐 -->
+      <div class="baokuan">
+        <p>宝贝推荐</p>
+        <button class="buttoncom" @click="editor(2)">编辑</button>
+      </div>
+
+      <!-- 店铺爆款专区 -->
+      <div class="left_main">
+        <!-- 顶部title -->
+        <div class="cont_title">
+          <img src="../img/index/title.png" alt="">
+        </div>
+        <!-- 中间商品 -->
+        <div class="cont_shop">
+          <div class="cont_img" @click="editor(3,0)">
+            <div class="cont_content">
+              <div class="dan">
+                <img src="../img/index/jidan.png" alt="">
+              </div>
+              <div class="cont_s">
+                <div class="cont_jie">
+                  <div class="jie1">农家散养  土鸡蛋</div>
+                  <div class="jie2">新鲜谷物虫草柴鸡蛋盒装</div>
+                  <div class="jie3">
+                    <span>下单立减5元</span>
+                  </div>
+                  <div class="jie4">
+                    <div class="jie4_price">到手低至</div>
+                    <div class="jie4_qian"> 
+                      <span>￥</span>
+                      <span>51.8</span>
+                    </div>  
+                  </div>
+                  <div class="jie5">
+                    <span>立即购买</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cont_imgs" @click="editor(3,1)">
+            <div class="cont_content">
+              <div class="cont_s">
+                <div class="cont_jie">
+                  <div class="jie1">越南芒果  大青芒</div>
+                  <div class="jie2">越南大青芒玉芒金煌芒</div>
+                  <div class="jie3">
+                    <span>下单立减5元</span>
+                  </div>
+                  <div class="jie4">
+                    <div class="jie4_price">到手低至</div>
+                    <div class="jie4_qian"> 
+                      <span>￥</span>
+                      <span>37.9</span>
+                    </div>  
+                  </div>
+                  <div class="jie5">
+                    <span>立即购买</span>
+                  </div>
+                </div>
+              </div>
+              <div class="cont_r">
+                <div class="dan">
+                  <img src="../img/index/mang.png" alt="">
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="cont_img" @click="editor(3,2)">
+            <div class="cont_content">
+              <div class="dan">
+                <img src="../img/index/pic22.png" alt="">
+              </div>
+              <div class="cont_s">
+                <div class="cont_jie">
+                  <div class="jie1">蒙牛纯甄  小蛮腰</div>
+                  <div class="jie2">创造营撑腰版小蛮腰风味酸牛乳</div>
+                  <div class="jie3">
+                    <span>下单立减11元</span>
+                  </div>
+                  <div class="jie4">
+                    <div class="jie4_price">到手低至</div>
+                    <div class="jie4_qian"> 
+                      <span>￥</span>
+                      <span>196</span>
+                    </div>  
+                  </div>
+                  <div class="jie5">
+                    <span>立即购买</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cont_imgs" @click="editor(3,3)">
+            <div class="cont_content">
+              <div class="cont_s">
+                <div class="cont_jie">
+                  <div class="jie1">麻辣小龙虾  净虾</div>
+                  <div class="jie2">餐饮同款海鲜水产</div>
+                  <div class="jie3">
+                    <span>下单立减8元</span>
+                  </div>
+                  <div class="jie4">
+                    <div class="jie4_price">到手低至</div>
+                    <div class="jie4_qian"> 
+                      <span>￥</span>
+                      <span>101</span>
+                    </div>  
+                  </div>
+                  <div class="jie5">
+                    <span>立即购买</span>
+                  </div>
+                </div>
+              </div>
+              <div class="cont_r">
+                <div class="dan">
+                  <img src="../img/index/long.png" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cont_img" @click="editor(3,4)">
+            <div class="cont_content">
+              <div class="dan">
+                <img src="../img/index/wa.png" alt="">
+              </div>
+              <div class="cont_s">
+                <div class="cont_jie">
+                  <div class="jie1">朕安心  有机娃娃菜</div>
+                  <div class="jie2">清炒时蔬 口感脆甜 新鲜蔬菜</div>
+                  <div class="jie3">
+                    <span>下单立减1元</span>
+                  </div>
+                  <div class="jie4">
+                    <div class="jie4_price">到手低至</div>
+                    <div class="jie4_qian"> 
+                      <span>￥</span>
+                      <span>23.50</span>
+                    </div>  
+                  </div>
+                  <div class="jie5">
+                    <span>立即购买</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cont_wen">
+
+          </div>
+        </div>
+        <!-- 返回顶部 -->
+        <div class="cont_back">
+          <img src="../img/index/back_top.png" alt="">
+        </div>
+      </div>
+    </div>
+    
+    <!-- 编辑弹出框 -->
+    <!-- 页头 -->
+    <div class="zhe " :class="{ishow2:isshow2}">
+      <div class="model zhecommon" :class="{ishow2:isshow2}" style="height: 620px;">
+        <div class=zhe_head>
+          <p>页头</p>
+          <div class="logo_hea" @click="editor(0)"></div>
+        </div>
+        <div class="zhe_top" style="height: 573px;">
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="zhe_magin">
+            <el-tab-pane label="页头设置" name="first">
+              <template slot-scope="scope">
+                <div style="display: flex;">
+                  <p style="display:inline ;">模块说明：</p>
+                  <p style="color:#999999;">此模块图片设计尺寸最佳为1920*120px或1200*120px，小于或大于此尺寸时图片将会变形</p>
+                </div>
+                <div style="margin-top: 20px;">
+                  <p style="display:inline ;">页头尺寸：</p>
+                  <el-radio v-model="radio_ye" label="0">1920*120px</el-radio>
+                  <el-radio v-model="radio_ye" label="1">1200*120px</el-radio>
+                </div>  
+                <div class="ye_card" style="display: flex;width: 740px; height:140px;margin-top: 20px;">
+                  <p style="display:inline; width:70px;">背景图片：</p>
+                  <el-upload
+                    class="avatar-uploader"
+                    :action="imgurls"
+                    :show-file-list="false"
+                    :on-success="handlebackSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="background_img" :src="surl+background_img" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </div>
+                <div class="ye_card" style="display: flex;width: 740px; height:140px;margin-top: 20px;">
+                  <p style="display:inline; width:70px;">logo图：</p>
+                  <el-upload
+                    class="avatar-uploader"
+                    :action="imgurls"
+                    :show-file-list="false"
+                    :on-success="handlelogoSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="didiaLogImageUrl" :src="surl+didiaLogImageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </div>
+                <div class="s_name" style="height: 46px;overflow: hidden;margin-top: 20px;">
+                  <p style="display:inline;">店铺名称：</p>
+                  <el-input v-model="input_cou" placeholder="请输入店铺名称" style="width: 419px;height: 32px;"></el-input>
+                </div>
+                <div class="right_but" style="width: 214px;margin:0 auto; ">
+                  <button @click="saveYe()">保存</button>
+                  <button @click="editor(0)">取消</button>
+                </div>
+              </template>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <div class="ihide" @click="editor(0)"></div>
+      </div>
+    </div>
+
+    <!-- 图片轮播 -->
+    <div class="zhe " :class="{ishow2:isshow4}">
+      <div class="model zhecommon" :class="{ishow2:isshow4}" style="width: 846px;height: 552px;">
+        <div class=zhe_head>
+          <p>轮播</p>
+          <div class="logo_hea" @click="editor(0)"></div>
+        </div>
+        <div class="zhe_top " style="width: 820px;height: 505px;">
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="zhe_magin">
+            <el-tab-pane label="图片设置" name="first">
+              <template slot-scope="scope">
+                <div style="display: flex; margin-bottom: 10px;">
+                  <p style="display:inline ;">模块说明：</p>
+                  <p style="color:#999999;">此模块图片设计尺寸最大为1920*1000px，最小为1920*540px，小于或大于时图片将会变形</p>
+                </div>
+                <p class="ckca" style="color: #ccc;margin: 0 0 20px 75px">为了保证图片的正常使用，仅支持3M以内jpg、jpeg、gif、png格式图片上传（最少传3张，最多传6张）</p>
+                <div class="lun_card" style="display: flex;width: 780px; height:325px;">
+                  <p style="display:inline; width:70px;">内容设置：</p>
+                  <el-upload 
+                    ref="upload" 
+                    :action="imgurls"           
+                    list-type="picture-card"
+                    :on-change="onlunchBo"
+                    :file-list="contfileLists"
+                    :on-remove="handleRemoveBo" 
+                    :on-success="handlelunSuccessBo"
+                    :show-file-list="true"
+                    :class="{hide:hideUpload}"
+                    style="width:636px;"
+                   >
+                    <i class="el-icon-plus" v-if="Lunboimages_bo.length<6"></i>
+                  </el-upload>
+                  <el-dialog :visible.sync="dialogVisibles">
+                    <img width="100%" :src="surl+dialunImageUrl">
+                  </el-dialog>
+                </div>
+                <div class="right_but" style="width: 214px;margin: -10px auto; ">
+                  <button @click="savelength(true)">保存</button>
+                  <button @click="editor(0)">取消</button>
+                </div>
+              </template>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <div class="ihide" @click="editor(0)"></div>
+      </div>
+    </div>
+
+    <!-- 宝贝推荐 -->
+    <div class="zhe " :class="{ishow:isshow}">
+      <div class="model zhecommon" :class="{ishow:isshow}" style="height:640px;">
+        <div class=zhe_head >
+          <p>宝贝推荐</p>
+          <div class="logo_hea" @click="editor(0)"></div>
+        </div>
+        <!-- 主要内容 -->
+        <div class="zhe_top" style="height:593px;position: relative;">
+          <!--  -->
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="zhe_magin">
+              <!-- 宝贝设置内容 -->
+            <el-tab-pane label="模块设置" name="first">
+              <template slot-scope="scope">
+                <div style="display: flex;">
+                  <p style="display:inline ;">模块说明：</p>
+                  <p style="color:#999999;">此模块设置包含整个模块背景，标题以及返回顶部的按钮图片</p>
+                </div>
+                <div style="color:#999999;margin-left: 75px;">模块背景设计尺寸最佳为1920*3200px，小于或大于时图片将会变形</div>
+                <div class="bao_card" style="display: flex;width: 740px; height:100px;margin-top: 20px;">
+                  <p style="display:inline; width:70px;">模块背景：</p>
+                  <el-upload
+                    class="avatar-uploader"
+                    :action="imgurls"
+                    :show-file-list="false"
+                    :on-success="handlemoBackSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="dibackImageUrl" :src="surl+dibackImageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </div>
+                <p class="ckca" style="color: #ccc;margin: 0 0 20px 77px">为了保证图片的正常使用，仅支持jpg、jpeg、gif、png格式图片上传</p>
+                <div class="bao_card" style="display: flex;width: 740px; height:100px;margin-top: 20px;">
+                  <p style="display:inline; width:70px;">模块标题：</p>
+                  <el-upload
+                    class="avatar-uploader"
+                    :action="imgurls"
+                    :show-file-list="false"
+                    :on-success="handleMoSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="diMoImageUrl" :src="surl+diMoImageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </div>
+                <p class="ckca" style="color: #ccc;margin: 0 0 20px 77px">为了保证图片的正常使用，仅支持jpg、jpeg、gif、png格式图片上传</p>
+                <div class="bao_card" style="display: flex;width: 740px; height:100px;margin-top: 20px;">
+                  <p style="display:inline; width:70px;">返回顶部：</p>
+                  <el-upload
+                    class="avatar-uploader"
+                    :action="imgurls"
+                    :show-file-list="false"
+                    :on-success="handleTopSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="diTopImageUrl" :src="surl+diTopImageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </div>
+                <p class="ckca" style="color: #ccc;margin: 0 0 20px 77px">为了保证图片的正常使用，仅支持jpg、jpeg、gif、png格式图片上传，请上传带有返回顶部文字的图片</p>
+                <div class="right_but" style="width: 214px;margin: -10px auto; ">
+                  <button @click="save(0)">保存</button>
+                  <button @click="editor(0)">取消</button>
+                </div>
+              </template>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <div class="ihide" @click="editor(0)"></div>
+      </div>
+    </div>
+
+    <!-- 基础信息 -->
+    <div class="zhe " :class="{ishow:isshow3}">
+      <div class="model zhecommon" :class="{ishow:isshow3}" style="height:930px">
+        <div class=zhe_head>
+          <p>基础信息</p>
+          <div class="logo_hea" @click="editor(0)"></div>
+        </div>
+        <div class="zhe_top " style="height:882px">
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="zhe_magin">
+            <el-tab-pane label="宝贝信息" name="first">
+              <template slot-scope="scope">
+                <div class="s_count" style="height: 46px;overflow: hidden;">
+                  <p style="display:inline;">内容设置：</p>
+                  <el-select v-model="tem_goods.value" placeholder="请选择商品内容" @change="Times">
+                    <el-option
+                      v-for="item in option"
+                      :key="item.goods_id"
+                      :label="item.goods_name"
+                      :value="item.goods_id+','+item.goods_name">
+                    </el-option>
+                  </el-select>
+                </div>
+                <p class="ckca" style="color: #ccc;margin: 0 0 15px 77px">请先选择商品再修改商品基础信息。</p>
+                <div class="s_count" style="height: 46px;overflow: hidden;">
+                  <p style="display:inline;">宝贝标题：</p>
+                  <el-input v-model="tem_goods.biaoti" placeholder="请输入宝贝标题" style="width: 419px;height: 32px;"></el-input>
+                </div>
+                <p class="ckca" style="color: #ccc;margin: 0 0 15px 77px">请先选择商品再修改商品名称，最多允许输入30个汉字（60个字符）</p>
+                <div style="display: flex; height: 78px;">
+                  <p style="display:inline;width: 82px;">宝贝说明：</p>
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 8, maxRows: 10}"
+                    placeholder="请输入内容"
+                    v-model="tem_goods.description">
+                  </el-input>
+                </div>
+                <p class="ckca" style="color: #ccc;margin: 0 0 15px 77px">请输入商品说明信息，非必填</p>
+                <div class="ye_card" style="display: flex;width: 740px; height:140px;margin-top: 20px;">
+                  <p style="display:inline; width:70px;">宝贝主图：</p>
+                  <el-upload
+                    class="avatar-uploader"
+                    :action="imgurls"
+                    :show-file-list="false"
+                    :on-success="handleLogoSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="tem_goods.dizhuImageUrl" :src="surl+tem_goods.dizhuImageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                  <span style="margin-left: 10px;">仅支持3M以内jpg、jpeg、png格式图片上传，尺寸不得小于400*400px。</span>
+                </p>
+                </div>
+                <div class="s_count" style="height: 46px;overflow: hidden;margin-top: 20px;">
+                  <p style="display:inline;">宝贝售价：</p>
+                  <el-input v-model="tem_goods.price_shou" placeholder="请输入宝贝售价" style="width: 419px;height: 32px;"><i slot="suffix" style="font-size: 14px;font-family: SourceHanSansCN-Normal; color: #000;line-height: 40px;margin-right: 5px;">元</i></el-input>
+                </div>
+                <p class="ckca" style="color: #ccc;margin: 0 0 15px 77px">请先选择商品再修改商品价格。</p>
+                <div>
+                  <p style="display:inline ;">展示方式：</p>
+                  <el-radio v-model="tem_goods.radio" label="0">左图右文</el-radio>
+                  <el-radio v-model="tem_goods.radio" label="1">左文右图</el-radio>
+                </div>  
+                <div style="margin-top: 15px;">
+                  <p style="display:inline ;">优惠信息：</p>
+                  <el-radio v-model="tem_goods.radio1" label="0">显示</el-radio>
+                  <el-radio v-model="tem_goods.radio1" label="1">不显示</el-radio>
+                </div>  
+                <div style="display: flex; margin-top: 15px;margin-left: 10px;">
+                  <span style="font-size: 14px; color: #222222;font-family: SourceHanSansCN-Normal;margin: 10px 10px 0 69px;">满</span>
+                    <el-input id="goods_full1" v-model="tem_goods.goods_full1" placeholder="请输入使用门槛金额" style="width: 178px;height: 32px;"><i slot="suffix" style="font-size: 14px;font-family: SourceHanSansCN-Normal; color: #000;line-height: 40px;margin-right: 5px;">元</i></el-input>
+                  <span style="font-size: 14px; color: #222222;font-family: SourceHanSansCN-Normal;margin: 10px 10px 0 10px;">减</span>
+                    <el-input id="goods_minus1" v-model="tem_goods.goods_minus1" placeholder="请输入优惠金额" style="width: 178px;height: 32px;"><i slot="suffix" style="font-size: 14px;font-family: SourceHanSansCN-Normal; color: #000;line-height: 40px;margin-right: 5px;">元</i></el-input>
+                </div>
+                <div style="display: flex; margin-top: 15px;margin-left: 10px;">
+                  <span style="font-size: 14px; color: #222222;font-family: SourceHanSansCN-Normal;margin: 10px 10px 0 69px;">满</span>
+                    <el-input id="goods_full2" v-model="tem_goods.goods_full2" placeholder="请输入使用门槛金额" style="width: 178px;height: 32px;"><i slot="suffix" style="font-size: 14px;font-family: SourceHanSansCN-Normal; color: #000;line-height: 40px;margin-right: 5px;">元</i></el-input>
+                  <span style="font-size: 14px; color: #222222;font-family: SourceHanSansCN-Normal;margin: 10px 10px 0 10px;">减</span>
+                    <el-input id="goods_minus2" v-model="tem_goods.goods_minus2" placeholder="请输入优惠金额" style="width: 178px;height: 32px;"><i slot="suffix" style="font-size: 14px;font-family: SourceHanSansCN-Normal; color: #000;line-height: 40px;margin-right: 5px;">元</i></el-input>
+                </div>
+                <div style="display: flex; margin-top: 15px;;">
+                  <div style="font-size: 12px;color: #cccccc;font-family: SourceHanSansCN-Normal;margin: 0 0 15px 80px">宝贝使用门槛金额必须高于优惠金额</div>
+                </div>
+                <div style="height: 46px;overflow: hidden;">
+                  <p style="display:inline; font-family: SourceHanSansCN-Normal; color: #222222; font-size: 14px;">宝贝规格：</p>
+                  <el-input id="goods_val" v-model="tem_goods.goods_val" placeholder="请输入数值" style="width: 203px;height: 32px;margin-left: 10px;"></el-input>
+                  <el-input id="goods_spec" v-model="tem_goods.goods_spec" placeholder="请输入单位" style="width: 100px;height: 32px;margin-left: -100px;"></el-input>
+                </div>
+                <div>
+                  <div class="right_but" style="width: 214px;margin: 0 auto;">
+                    <button @click="saveBao()">保存</button>
+                    <button @click="editor(0)">取消</button>
+                  </div>
+                </div>
+              </template>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <div class="ihide" @click="editor(0)"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../publicJs/vue.js"></script>
+<script src="../js/pub.js"></script>
+<script src="../publicJs/axios.js"></script>
+<script src="../js/storeopt1.js"></script>
+<script src="../publicJs/element_ui/element.js"></script>
+<script>
+  let itemsmu = document.querySelectorAll('.item_mu');
+  itemWrapsmu = document.querySelectorAll('.item_wrapmu');
+  itemsmu.forEach((ele, index) => {
+    ele.dispBols = 'false'; //创建一个属性来记录当前面板是否展开   true 展开 false折叠 
+    itemsmu[index].onclick = ((e) => {
+      // let thisDispBols = e.toElement.dispBols; //先保存thisDisBol。接下来要重置
+      let thisDispBols = e.target.dispBols; //先保存thisDisBol。接下来要重置
+      itemsmuInit();
+      // thisDispBols == 'false' ? e.toElement.dispBols = 'true' : e.toElement.dispBols = 'false';
+      thisDispBols == 'false' ? e.target.dispBols = 'true' : e.target.dispBols = 'false';
+      repaintmu();
+    });
+  })
+  function repaintmu() {
+    itemsmu.forEach((ele, index) => {
+      ele.dispBols == 'true' ? itemWrapsmu[index].style.display = 'block' : itemWrapsmu[index].style.display = 'none';
+    })
+  }
+  function itemsmuInit() {
+    itemsmu.forEach((ele, index) => {
+      ele.dispBols = 'false';
+    })
+  }
+
+  let items = document.querySelectorAll('.item');
+  itemWraps = document.querySelectorAll('.item_wrap');
+  items.forEach((ele, index) => {
+    ele.dispBol = 'false'; //创建一个属性来记录当前面板是否展开   true 展开 false折叠 
+    items[index].onclick = ((e) => {
+      // let thisDispBol = e.toElement.dispBol; //先保存thisDisBol。接下来要重置
+      let thisDispBol = e.target.dispBol; //先保存thisDisBol。接下来要重置
+      itemsInit();
+      // thisDispBol == 'false' ? e.toElement.dispBol = 'true' : e.toElement.dispBol = 'false';
+      thisDispBol == 'false' ? e.target.dispBol = 'true' : e.target.dispBol = 'false';
+      repaint();
+    });
+  })
+  function repaint() {
+    items.forEach((ele, index) => {
+      ele.dispBol == 'true' ? itemWraps[index].style.display = 'block' : itemWraps[index].style.display = 'none';
+    })
+  }
+  function itemsInit() {
+    items.forEach((ele, index) => {
+      ele.dispBol = 'false';
+    })
+  }
+</script>
+<script>
+  (function () {
+    var banner = document.querySelector('.banner');
+      var banner_list = document.querySelector('.banner_list ul');
+      var left = document.querySelector('.left');
+      var right = document.querySelector('.right');
+      var btn = document.querySelector('.banner_btn');
+      // 克隆第一张图片，并添加到元素的最后
+        var firstClone = banner_list.children[0].cloneNode(true);
+      // 
+      banner_list.appendChild(firstClone);
+      // 设置图片盒子的总宽度
+      var len = banner_list.children.length;
+      banner_list.style.width = 1760 * len + 'px';
+      // 创建图片对应的点的个数
+      for (var j = 0; j < len - 1; j++) {
+        var liNav = document.createElement('li')
+        btn.appendChild(liNav);
+      }
+      btn.children[0].className="active"
+
+      var btnli = document.querySelectorAll('.banner_btn li');
+      var n = 0; //用来记录banner_list的偏移量
+      var time; //计时器，控制图片的移动
+      var index = 0; //记录图片的个数，也就是图片的下标
+      var btnIndex = 0; //记录点的下标
+      var flag = true; //开关，控制用户的操作
+      right.onclick = nextImg;
+      function nextImg() {
+        if (flag) {
+          // 进入操作，直接flag赋值为false,相当于门被反锁了，其他的操作就无法进行
+          flag = false;
+          index++;
+          btnIndex++;
+          if (btnIndex > btnli.length - 1) {
+            btnIndex = 0;
+          }
+          time = setInterval(moveLeft, 16.7)
+        }
+      }
+      // 下一张图片
+      function moveLeft() {
+        n += 40;
+        if (n >= 1760 * index) {
+          clearInterval(time);
+          flag = true;
+          
+        }
+        if (n >= ((len - 1) * 1760)) {
+          n = 0;
+          index = 0;
+        }
+        banner_list.style.marginLeft = -n + 'px';
+        changeBtn();
+      }
+      // 控制点的样式
+      function changeBtn() {
+        // 重置点的样式
+        for (var i = 0; i < btnli.length; i++) {
+          btnli[i].className = '';
+        }
+        // 控制点的样式改变
+        btnli[btnIndex].className = "active";
+      }
+      // 点击左箭头，切换上一张图片
+      left.onclick = function () {
+        // 进行操作之前判断门是打开的还是关闭
+        if (flag) {
+          flag = false;
+          index--;
+          btnIndex--;
+          time = setInterval(moveRight, 16.7)
+        }
+      }
+      // 上一张
+      function moveRight() {
+        // 如果偏移量x = 0;则对应的图片是第一张，点击切换上一张，意味着看最后一张，最后一张图对应的下标为3；所以为len -2 ;此时x的偏移量应重置为3000，既移动到克隆的那张图片；然后过度到第四张图片
+        if (n <= 0) {
+          n = (len - 1) * 1760;
+          index = len - 2;
+          btnIndex = btnli.length - 1;
+        }
+        n -= 50;
+        if (n <= 1760 * index) {
+          clearInterval(time);
+          flag = true;
+        }
+        banner_list.style.marginLeft = -n + 'px';
+        changeBtn();
+      }
+      // 点击点切换图片，给点绑定上点击事件
+      for (var i = 0; i < btnli.length; i++) {
+        btnli[i].index = i;
+        btnli[i].onclick = function () {
+          if (flag) {
+            flag = false;
+            if (this.index > index) {
+              // 意味看下一张
+              // 切换到我点击的点对应的图片
+              index = this.index;
+              // 记录点的下标和当前点击的点的下标对应一致
+              btnIndex = this.index;
+              time = setInterval(moveLeft, 16.7);
+            } else if (this.index < index) {
+              // 切换到我点击的点对应的图片
+              index = this.index;
+              // 记录点的下标和当前点击的点的下标对应一致
+              btnIndex = this.index;
+              // 意味看上一张
+              time = setInterval(moveRight, 16.7)
+            }
+          }
+
+        }
+      }
+    // 自动播放
+    var autoPlay = setInterval(nextImg, 3000);
+    // 清除自动播放
+    banner.onmouseover = function () {
+      clearInterval(autoPlay)
+    }
+    banner.onmouseout = function () {
+      autoPlay = setInterval(nextImg, 3000);
+    }
+  })()
+</script>
+</html>
